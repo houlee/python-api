@@ -11,6 +11,9 @@ opencv-python = "*"
 pytesseract = "*"
 django = "*"
 djangorestframework = "*"
+request = "*"
+requests = "*"
+baidu-aip = "*"
 
 [requires]
 python_version = "3.7"

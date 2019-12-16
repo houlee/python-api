@@ -2,6 +2,7 @@
 import numpy as np
 import cv2
 import math
+from . import utils
 
 #pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
 #必须要能识别出线条，否则会报错
@@ -41,19 +42,30 @@ def dataProc(dict,precision,x1,y1,x2,y2):
 #precision 是设置旋转精度，传3，表示最小精度是3度
 #返回角度列表，第一个是次数最多的角度，第二个是累计长度最长的角度
 def figureDegree(path,precision):
-    # 读取图片，灰度化
-    src = cv2.imread(path, cv2.IMREAD_COLOR)
-    #showAndWaitKey("src", src)
-    gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-    showAndWaitKey("gray", gray)
+    #判断是否网络图片还是本地图片
+    if path.find('http') != -1:         #网络图片
+        print("network pic")
+        # 读取图片，灰度化
+        src = utils.url_to_image(path, cv2.IMREAD_COLOR)
+        # showAndWaitKey("src", src)
+        gray = utils.url_to_image(path, cv2.IMREAD_GRAYSCALE)
+        # showAndWaitKey("gray", gray)
+    else:           #本地图片
+        print("local pic")
+        # 读取图片，灰度化
+        src = cv2.imread(path, cv2.IMREAD_COLOR)
+        # showAndWaitKey("src", src)
+        gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+        # showAndWaitKey("gray", gray)
+
     # 腐蚀、膨胀
     kernel = np.ones((5, 5), np.uint8)
     erode_Img = cv2.erode(gray, kernel)
     eroDil = cv2.dilate(erode_Img, kernel)
-    showAndWaitKey("eroDil", eroDil)
+    #showAndWaitKey("eroDil", eroDil)
     # 边缘检测
     canny = cv2.Canny(eroDil, 50, 150)
-    showAndWaitKey("canny", canny)
+    #showAndWaitKey("canny", canny)
     # 霍夫变换得到线条
     """
     HoughLinesP(image, rho, theta, threshold, lines=None, minLineLength=None, maxLineGap=None) 
@@ -84,19 +96,19 @@ def figureDegree(path,precision):
     # dict结构：{degree1:[count1,len1],degree2:[count2,len2]}
     #按长度倒序排序
     lenList = sorted(dataDict.items(), key=lambda x: x[1][1], reverse=True)
-    print("lenList: %s" %(lenList))
+    #print("lenList: %s" %(lenList))
     degree.append(lenList[0][0])
 
     # 按次数倒序排序
     countList = sorted(dataDict.items(), key=lambda x: x[1][0], reverse=True)
-    print("countList: %s" % (countList))
+    #print("countList: %s" % (countList))
     degree.append(countList[0][0])
 
-    showAndWaitKey("houghP", drawing)
+    #showAndWaitKey("houghP", drawing)
     """
     计算角度,因为x轴向右，y轴向下，所有计算的斜率是常规下斜率的相反数，我们就用这个斜率（旋转角度）进行旋转
     """
-    print(degree)
+    print("figure degree: %s"%(degree))
 
     return degree
 
@@ -104,7 +116,16 @@ def rotate(path, angle, center=None, scale=1.0):
     """
     旋转角度大于0，则逆时针旋转（正值），否则顺时针旋转（负值）
     """
-    image = cv2.imread(path, cv2.IMREAD_COLOR)
+    # 判断是否网络图片还是本地图片
+    if path.find('http') != -1:  # 网络图片
+        # 读取图片
+        image = utils.url_to_image(path, cv2.IMREAD_COLOR)
+        # showAndWaitKey("src", src)
+    else:  # 本地图片
+        # 读取图片
+        image = cv2.imread(path, cv2.IMREAD_COLOR)
+        # showAndWaitKey("src", src)
+
     # 调整角度
     """
     if (angle == 90) or (angle == -90):
@@ -128,13 +149,4 @@ def rotate(path, angle, center=None, scale=1.0):
     #cv2.putText(rotated, 'Angle: {:.2f} degrees orc-rotate'.format(angle), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
     return rotated
 
-def showAndWaitKey(winName, img):
-    cv2.imshow(winName, img)
-    cv2.waitKey()
 
-#图片校正， 返回校正后的图片数据
-#path 图片地址；precision 图片旋转精度 默认为1
-def imageRotate(path, precision=1):
-    degree=figureDegree(path,precision)
-    rotateImg = rotate(path, degree[0])
-    return rotateImg
