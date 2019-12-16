@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 import math
 from . import utils
+from imgRotate import logger
 
 #pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
 #必须要能识别出线条，否则会报错
@@ -44,14 +45,14 @@ def dataProc(dict,precision,x1,y1,x2,y2):
 def figureDegree(path,precision):
     #判断是否网络图片还是本地图片
     if path.find('http') != -1:         #网络图片
-        print("network pic")
+        #print("network pic")
         # 读取图片，灰度化
         src = utils.url_to_image(path, cv2.IMREAD_COLOR)
         # showAndWaitKey("src", src)
         gray = utils.url_to_image(path, cv2.IMREAD_GRAYSCALE)
         # showAndWaitKey("gray", gray)
     else:           #本地图片
-        print("local pic")
+        #print("local pic")
         # 读取图片，灰度化
         src = cv2.imread(path, cv2.IMREAD_COLOR)
         # showAndWaitKey("src", src)
@@ -108,7 +109,7 @@ def figureDegree(path,precision):
     """
     计算角度,因为x轴向右，y轴向下，所有计算的斜率是常规下斜率的相反数，我们就用这个斜率（旋转角度）进行旋转
     """
-    print("figure degree: %s"%(degree))
+    logger.info('figure degree:{0}'.format(degree))
 
     return degree
 
@@ -139,9 +140,9 @@ def rotate(path, angle, center=None, scale=1.0):
     if (angle >= 80):
         angle = angle-180
 
-    print("rotate angle:%d" % (angle))
+    #print("rotate angle:%d" % (angle))
     (w, h) = image.shape[0:2]
-    print(w,h)
+    #print(w,h)
     if center is None:
         center = (w // 2, h // 2)
     wrapMat = cv2.getRotationMatrix2D(center, angle, scale)

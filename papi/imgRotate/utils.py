@@ -2,6 +2,7 @@
 import cv2
 import urllib
 import numpy as np
+from imgRotate import logger
 
 #util
 # URL到图片
@@ -26,17 +27,17 @@ def get_savepath(path):
     #IMAGE_ROOT = "/data/image_temp/"
     IMAGE_ROOT = "/Users/houlee/Documents/git_dev/temp/"
     # 查找文件名后缀位置
-    print("get_savepath")
-    print(path)
+    #print("get_savepath")
+    #print(path)
     path_list = list(path)
     nPos = path.rfind('.')
     path_list.insert(nPos, "result")
     path1 = "".join(path_list)
-    print(path1)
+    #print(path1)
     if path1.find("http") != -1:  # 网络图片
         nPos1 = path1.rfind('/')
         path2 = IMAGE_ROOT + path1[nPos1:]
-        print(path2)
+        #print(path2)
         return path2
     else:  # 本地图片
         return path1

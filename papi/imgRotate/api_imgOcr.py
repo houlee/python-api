@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from aip import AipOcr
 import os
+from imgRotate import logger
+
 
 @csrf_exempt
 @api_view(http_method_names=['post'])                #只允许 post
@@ -18,7 +20,7 @@ import os
 #倾斜图片校正角度，返回校正后的图片地址
 def img_rotate(request):
     parameter = request.data
-    print(parameter)
+    logger.info('img_rotate para:{0}'.format(parameter))
     #获取原始图片地址
     #val = os.system('ls ./imgRotate/img/test11.jpg')         #当前位置为项目根目录
     #print(val)
@@ -27,10 +29,9 @@ def img_rotate(request):
     #计算旋转角度并旋转。 degree[0] 累计长度最长；degree[0] 累计次数最多
     degree = rotate.figureDegree(path, precision)
     rotateImg = rotate.rotate(path, degree[0])
-    print("rotate degree:%d"%(degree[0]))
+    logger.info('rotate degree:{0}'.format(degree[0]))
     #上传图片
 
-    print("ok")
     #获取图片地址并返回
     return Response({'picdata':rotateImg})
     #return Response({'dstpath':dstpath})
@@ -40,8 +41,9 @@ def img_rotate(request):
 @permission_classes((permissions.AllowAny,))
 #图片OCR接口 识别文字，返回识别后的文字。type取值 1：百度OCR; 2: 疯狂OCR
 def img_ocr(request):
+
     parameter = request.data
-    print(parameter)
+    logger.info('img_ocr para:{0}'.format(parameter))
 
     #获取原始图片地址
     path = parameter['url']
@@ -56,14 +58,14 @@ def img_ocr(request):
     cv2.imwrite(savepath, rotateImg)
 
     if type == 2:
-        print("FKocr")
+        #logger.info('FKocr')
         results=FKocr(savepath)
     else:
-        print("BDocr")
+        #logger.info('BDocr')
         results=BDocr(savepath)
-    print("ocr results: %s" %(results))
+    logger.info('ocr results:{0}'.format(results))
     results1 = BDocr(path)
-    print("ori ocr results: %s" % (results1))
+    logger.info('ori ocr results:{0}'.format(results1))
 
     #删除旋转后的临时文件
     os.remove(savepath)
@@ -81,7 +83,7 @@ def FKocr(path):
     # 重新保存图片
     image.save(path)
     code = pytesseract.image_to_string(image, lang='chi_sim')
-    print(code)
+    logger.info('FKocr results:{0}'.format(code))
     return code
 
 
@@ -105,12 +107,12 @@ def BDocr(url):
 
     # 判断是否网络图片还是本地图片
     if url.find('http') != -1:  # 网络图片
-        print("BDocr network pic")
+        #print("BDocr network pic")
         """ 带参数调用通用文字识别, 图片参数为远程url图片 """
         results = client.basicGeneralUrl(url, options)
 
     else:  # 本地图片
-        print("BDocr local pic")
+        #print("BDocr local pic")
         """ 读取图片 """
         image = utils.get_file_content(url)
         """ 带参数调用通用文字识别, 图片参数为本地图片 """
