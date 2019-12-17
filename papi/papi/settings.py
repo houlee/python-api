@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1rxoabyeto7@gh9(l+bwukv^*&=lm4-$y*z^lh^32oew@#d5#r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','10.10.*.*','192.168.*.*']
 
 
 # Application definition
@@ -76,11 +76,17 @@ WSGI_APPLICATION = 'papi.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql', #固定配置
+#        'HOST': '192.168.10.241',#mysql地址
+#        'PORT': '3306',#端口号
+#        'NAME': 'BLOGDB',#库名（组名）
+#        'USER': 'root',#用户
+#        'PASSWORD': 'password',#密码
+#        'OPTIONS': {'init_command': "SET sql_mode='traditional'", },
+#    }
 }
+
 
 
 # Password validation

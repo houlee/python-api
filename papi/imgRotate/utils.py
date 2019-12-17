@@ -24,8 +24,8 @@ def get_file_content(filePath):
 
 #根据path生成savepath。 xxxx.jpg 生成  xxxxresult.jpg
 def get_savepath(path):
-    #IMAGE_ROOT = "/data/image_temp/"
-    IMAGE_ROOT = "/Users/houlee/Documents/git_dev/temp/"
+    IMAGE_ROOT = "/tmp/image_temp/"
+    #IMAGE_ROOT = "/Users/houlee/Documents/git_dev/temp/"
     # 查找文件名后缀位置
     #print("get_savepath")
     #print(path)
