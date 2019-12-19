@@ -61,13 +61,15 @@ def img_ocr(request):
 
     #获取保存图片地址并保存旋转后的图片
     savepath=utils.get_savepath(path)
+    logger.info('temp img savepath:{0}'.format(savepath))
+
     cv2.imwrite(savepath, rotateImg)
 
     if type == 2:
         #logger.info('FKocr')
         results=FKocr(savepath)
     else:
-        #logger.info('BDocr')
+        logger.info('BDocr')
         results=BDocr(savepath)
     logger.info('ocr results:{0}'.format(results))
 
@@ -94,10 +96,12 @@ def FKocr(path):
     logger.info('FKocr results:{0}'.format(code))
     return code
 
-
+count_bdocr = 0
 #调用百度图片OCR 识别图片文字，返回识别后的文字
 def BDocr(url):
-
+    global count_bdocr
+    count_bdocr = count_bdocr + 1
+    logger.info('count of BDocr:{0}'.format(count_bdocr))
     #百度参数
     """ 你的 APPID AK SK """
     APP_ID = '18032299'
@@ -124,8 +128,13 @@ def BDocr(url):
         """ 读取图片 """
         image = utils.get_file_content(url)
         """ 带参数调用通用文字识别, 图片参数为本地图片 """
-        results = client.basicGeneral(image, options)  # 普通版  每天免费5万次
-        # results = client.basicAccurate(image, options)      #高精度版   每天免费500次
+        #results = client.basicGeneral(image, options)  # 普通版  每天免费5万次
+        results = client.basicAccurate(image, options)      #高精度版   每天免费500次
 
     #print(results)
+    #若超过调用次数，会返回 {'error_code': 17, 'error_msg': 'Open api daily request limit reached'},此时给业务返回空
+    #print('error_code' in results)
+    if 'error_code' in results:
+        logger.error('BDocr Open api daily request limit reached!!!,count:{0}'.format(count_bdocr))
+        return {}
     return results

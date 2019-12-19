@@ -148,6 +148,7 @@ def rotate(path, angle, center=None, scale=1.0):
     wrapMat = cv2.getRotationMatrix2D(center, angle, scale)
     rotated = cv2.warpAffine(image, wrapMat, (h, w))
     #cv2.putText(rotated, 'Angle: {:.2f} degrees orc-rotate'.format(angle), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+    logger.info('image rotate:{0}'.format(angle))
     return rotated
 
 
