@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import rotate
 from . import utils
+from . import barcode
 import cv2
 import pytesseract
 from PIL import Image
@@ -49,6 +50,11 @@ def img_ocr(request):
     path = parameter['url']
     type = parameter['type']
     precision = 2
+
+    #检测二维码
+    if barcode.barcode_detect(path):
+        results={"barcode":1}
+        return Response({'data': results})
     #计算旋转角度并旋转。 degree[0] 累计长度最长；degree[0] 累计次数最多
     degree = rotate.figureDegree(path, precision)
     rotateImg = rotate.rotate(path, degree[0])
@@ -64,8 +70,10 @@ def img_ocr(request):
         #logger.info('BDocr')
         results=BDocr(savepath)
     logger.info('ocr results:{0}'.format(results))
-    results1 = BDocr(path)
-    logger.info('ori ocr results:{0}'.format(results1))
+
+    #百度识别原图像
+    #results1 = BDocr(path)
+    #logger.info('ori ocr results:{0}'.format(results1))
 
     #删除旋转后的临时文件
     os.remove(savepath)

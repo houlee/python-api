@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "53f0cf9b341d5b44b4d1535af57dc78000a34f71108cc2d15ebf240be342af8f"
+            "sha256": "42f3cdd9a32f6d36836bfb75c63e89409866757763d00506d218a597344b3f2d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -11,7 +11,7 @@
             {
                 "name": "pypi",
                 "url": "https://pypi.tuna.tsinghua.edu.cn/simple",
-                "verify_ssl": true
+                "verify_ssl": false
             }
         ]
     },
@@ -46,11 +46,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:6f857bd4e574442ba35a7172f1397b303167dae964cf18e53db5e85fe248d000",
-                "sha256:d98c9b6e5eed147bc51f47c014ff6826bd1ab50b166956776ee13db5a58804ae"
+                "sha256:315b11ea265dd15348d47f2cbb044ef71da2018f6e582fed875c889758e6f844",
+                "sha256:b61295749be7e1c42467c55bcabdaee9fbe9496fdf9ed2e22cef44d9de2ff953"
             ],
             "index": "pypi",
-            "version": "==3.0"
+            "version": "==3.0.1"
         },
         "djangorestframework": {
             "hashes": [
@@ -192,6 +192,15 @@
                 "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be"
             ],
             "version": "==2019.3"
+        },
+        "pyzbar": {
+            "hashes": [
+                "sha256:0e204b904e093e5e75aa85e0203bb0e02888105732a509b51f31cff400f34265",
+                "sha256:496249b546be70ec98c0ff0ad9151e73daaffff129266df86150a15dcd8dac4c",
+                "sha256:7d6c01d2c0a352fa994aa91b5540d1caeaeaac466656eb41468ca5df33be9f2e"
+            ],
+            "index": "pypi",
+            "version": "==0.1.8"
         },
         "query-string": {
             "hashes": [

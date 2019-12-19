@@ -15,6 +15,7 @@ request = "*"
 requests = "*"
 baidu-aip = "*"
 uwsgi = "*"
+pyzbar = "*"
 
 [requires]
 python_version = "3.7"
