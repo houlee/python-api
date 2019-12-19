@@ -16,3 +16,7 @@ papi/.DS_Store
 .idea/workspace.xml
 doc/.~PI接口文档.docx
 doc/.~部署文档.docx
+papi/imgRotate/.DS_Store
+papi/log/imgRotate.log.2019-12-16
+papi/log/imgRotate_test.log.2019-12-16
+papi/imgRotate/img/.DS_Store

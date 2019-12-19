@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #print('__file__={0:<35} | __name__={1:<20} | __package__={2:<20}'.format(__file__,__name__,str(__package__)))
 
-from utils import url_to_image
+from . import utils
 import cv2
 from imgRotate import logger
 import pyzbar.pyzbar as pyzbar
@@ -11,7 +11,7 @@ def barcode_detect(image_path):
     if image_path.find('http') != -1:  # 网络图片
         # print("network pic")
         # 读取图片，灰度化
-        gray = url_to_image(image_path, cv2.IMREAD_GRAYSCALE)
+        gray = utils.url_to_image(image_path, cv2.IMREAD_GRAYSCALE)
         # showAndWaitKey("gray", gray)
     else:  # 本地图片
         # print("local pic")
