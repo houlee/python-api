@@ -128,8 +128,8 @@ def BDocr(url):
         """ 读取图片 """
         image = utils.get_file_content(url)
         """ 带参数调用通用文字识别, 图片参数为本地图片 """
-        #results = client.basicGeneral(image, options)  # 普通版  每天免费5万次
-        results = client.basicAccurate(image, options)      #高精度版   每天免费500次
+        results = client.basicGeneral(image, options)  # 普通版  每天免费5万次
+        #results = client.basicAccurate(image, options)      #高精度版   每天免费500次
 
     #print(results)
     #若超过调用次数，会返回 {'error_code': 17, 'error_msg': 'Open api daily request limit reached'},此时给业务返回空
