@@ -2,6 +2,7 @@
 from . import rotate
 from . import utils
 from . import barcode
+from .global_data import g_ocr_type,g_count_bdocr
 import cv2
 import pytesseract
 from PIL import Image
@@ -12,7 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 from aip import AipOcr
 import os
 from imgRotate import logger
-
 
 @csrf_exempt
 @api_view(http_method_names=['post'])                #只允许 post
@@ -43,10 +43,11 @@ def img_rotate(request):
 #图片OCR接口 识别文字，返回识别后的文字。type取值 1：百度OCR; 2: 疯狂OCR
 def img_ocr(request):
 
+    global g_ocr_type
     parameter = request.data
     logger.info('img_ocr para:{0}'.format(parameter))
 
-    #获取原始图片地址
+    #获取原始图片地址和OCR类型
     path = parameter['url']
     type = parameter['type']
     precision = 2
@@ -65,8 +66,9 @@ def img_ocr(request):
 
     cv2.imwrite(savepath, rotateImg)
 
-    if type == 2:
-        #logger.info('FKocr')
+    #if type == 2:
+    if g_ocr_type == 2:       #使用全局变量控制，和传入参数无关，默认使用BDOCR，在BDOCR次数用尽后，使用FKOCR
+        logger.info('FKocr')
         results=FKocr(savepath)
     else:
         logger.info('BDocr')
@@ -96,12 +98,12 @@ def FKocr(path):
     logger.info('FKocr results:{0}'.format(code))
     return code
 
-count_bdocr = 0
+
 #调用百度图片OCR 识别图片文字，返回识别后的文字
 def BDocr(url):
-    global count_bdocr
-    count_bdocr = count_bdocr + 1
-    logger.info('count of BDocr:{0}'.format(count_bdocr))
+    global g_count_bdocr,g_ocr_type
+    g_count_bdocr = g_count_bdocr + 1
+    logger.info('count of BDocr:{0}'.format(g_count_bdocr))
     #百度参数
     """ 你的 APPID AK SK """
     APP_ID = '18032299'
@@ -135,6 +137,7 @@ def BDocr(url):
     #若超过调用次数，会返回 {'error_code': 17, 'error_msg': 'Open api daily request limit reached'},此时给业务返回空
     #print('error_code' in results)
     if 'error_code' in results:
-        logger.error('BDocr Open api daily request limit reached!!!,count:{0}'.format(count_bdocr))
+        g_ocr_type = 2        #后续调用FKOCR
+        logger.error('BDocr Open api daily request limit reached!!!,count,g_ocr_type:{0}'.format((g_count_bdocr,g_ocr_type)))
         return {}
     return results

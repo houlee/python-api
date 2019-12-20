@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+#    'django_crontab',
     'imgRotate',  # 添加imgRotate app
     'rest_framework',  # 添加rest_framework
 ]
@@ -123,6 +124,32 @@ REST_FRAMEWORK = {
 }
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
+
+'''
+CRONJOBS = [
+    # 每天0：05执行
+    #('05 0 * * *', 'imgRotate.job.reset_data', '>>/Users/houlee/Documents/git_dev/python-api/papi/log/imgRotate.log')
+    # 每分钟执行
+    ('*/1 * * * *', 'imgRotate.job.resetData', '>>/Users/houlee/Documents/git_dev/python-api/papi/log/imgRotate.log')
+ ]
+
+ 第一个参数（表示时间）：
+ 前5个字段分别表示：
+ 	• 分钟：0-59
+ 	• 小时：1-23
+ 	• 日期：1-31
+ 	• 月份：1-12
+ 	• 星期：0-6（0表示周日）
+ 一些特殊符号：
+ *： 表示任何时刻
+ ,：　表示分割
+ -：表示一个段，如第二端里： 1-5，就表示1到5点
+ /n : 表示每个n的单位执行一次，如第二段里，*/1, 就表示每隔1个小时执行一次命令。也可以写成1-23/1.
+ 第二个参数（表示路径）：
+ 格式：app名称/文件名/函数名
+ 如果想生成日志，那就再加一个字符串类型的参数：'>> path/name.log'， path路径，name文件名。'>>'表示追加写入，'>'表示覆盖写入。
+ 提示：如果你有多个定时任务，以逗号隔开，都放入CORJOBS中即可。
+'''
 
 LANGUAGE_CODE = 'zh-hans'
 

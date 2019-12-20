@@ -16,6 +16,8 @@ requests = "*"
 baidu-aip = "*"
 uwsgi = "*"
 pyzbar = "*"
+django-crontab = "*"
+apscheduler = "*"
 
 [requires]
 python_version = "3.7"

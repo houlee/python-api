@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 #from rotate import rotate, figureDegree
-from ocr import ocr
+from imgRotate import ocr
 import cv2
 import requests
 import sys
-sys.path.append("..") #         这句是为了导入_config
+sys.path.append("..")
 import mylog
+from imgRotate.global_data import g_count_bdocr,g_ocr_type
+import os
 
-logger = mylog.Logger(logname='../log/imgRotate_test.log', loglevel=1, logger="hou").getlog()
+logger = mylog.Logger(logname='./log/imgRotate_test.log', loglevel=1, logger="hou").getlog()
 
 def showAndWaitKey1(winName, img):
     cv2.imshow(winName, img)
@@ -28,40 +30,28 @@ def test02():
     logger.info('test02:{0}'.format(h.text))
 
 def test03():
-    url= 'http://127.0.0.1:8000/imgOcr/'
-    #url= 'http://papi.nb.com/imgOcr/'
+    #url= 'http://127.0.0.1:8000/imgOcr/'
+    url= 'http://papi.nb.com/imgOcr/'
     #url_list=['http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818216084494.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818918131785.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818019831903.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759144144043760.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015758418141947957.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756942297074845.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756508813261853.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756382795891839.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756382141356461.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015718049603469182.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015742476088588479.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015740783413702498.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015739062897325164.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015750235922624129.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015749386814174360.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015747684238389457.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015747683640417640.jpg']
     url_list=['http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg','https://public.zgzcw.com/d/images/201910291572328653220_872.png']
     #url_list = ['./imgRotate/img/test19.jpg']
     for u in url_list:
-        data = {'url': u, 'type': 1}
+        data = {'url': u, 'type': 2}
         # data = {'url': "./imgRotate/img/test19.jpg", 'type': 1}
         h = requests.post(url, json=data)
         logger.info('test03:{0}'.format(h.text))
 
 
-''' 
-#测试链接
-http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015759818216084494.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015759818918131785.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015759818019831903.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015759144144043760.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015758418141947957.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015756942297074845.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015756508813261853.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015756382795891839.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015756382141356461.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015718049603469182.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015742476088588479.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015740783413702498.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015739062897325164.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015750235922624129.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015749386814174360.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015747684238389457.jpg
-http://file.fengkuangtiyu.cn/old/images/900/90015747683640417640.jpg
-'''
 def test04():
+    global g_ocr_type
+    global g_count_bdocr
+    g_ocr_type = 1
+    g_count_bdocr = 0
+    print("jobjobjob")
+    os.popen("touch /Users/houlee/Documents/git_dev/python-api/papi/1.txt")
+    logger.info("*** job resetData *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
+
+def test05():
     path = "./img/test11.jpeg"
     # savepath = ["./img/test04r01.jpg","./img/test04r02.jpg","./img/test04r03.jpg","./img/test04r04.jpg"]
     # savepath = ["./img/test02r31.jpeg", "./img/test02r32.jpeg", "./img/test02r33.jpeg", "./img/test02r34.jpeg"]
@@ -96,13 +86,13 @@ def test04():
 
 
 
-
 if __name__ == '__main__':
     #test01()
     #test02()
     #for i in range(30):
         test03()
     #test04()
+    #test05()
 
 
 
