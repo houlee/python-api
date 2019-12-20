@@ -73,7 +73,7 @@ def img_ocr(request):
     else:
         logger.info('BDocr')
         results=BDocr(savepath)
-    logger.info('ocr results:{0}'.format(results))
+    #logger.info('ocr results:{0}'.format(results))
 
     #百度识别原图像
     #results1 = BDocr(path)
