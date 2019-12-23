@@ -20,11 +20,12 @@ logger.info('project path:{0}'.format(val))
 def job_resetData():
     global g_ocr_type
     global g_count_bdocr
+    logger.info("*** job resetData *** ")
+    logger.info("*** job resetData before *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
     g_ocr_type = 1
     g_count_bdocr = 0
     #os.popen("touch /Users/houlee/Documents/git_dev/python-api/papi/1.txt")
-    logger.info("*** job resetData *** ")
-    logger.info("*** job resetData *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
+    logger.info("*** job resetData after *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
     logger.info("*** job resetData *** ")
 
 # BackgroundScheduler: 适合于要求任何在程序后台运行的情况，当希望调度器在应用后台执行时使用
