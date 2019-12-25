@@ -41,3 +41,29 @@ def get_savepath(path):
         return path2
     else:  # 本地图片
         return path1
+
+#字符串转换为字典
+def str_to_dict(str):
+    d={}
+    str1 = str.replace(' ','')  #去空格
+    d["words"]=str1
+    return d
+#组装返回 data 格式
+#输入data："第 3 多 周 六 004\n洙 南 海 洋 王 队 : 懵腹小芊 Vs 八\n\n授 注 对 应 的 奖 金 额 )\n7,000.00 五"
+#输出data：{"log_id":3091207121918435257,"words_result_num":10,"words_result":[{"words":"第3场周六004"},{"words":"湘南海洋"},{"words":"主队:横滨水手vs"},{"words":"(3:1)10.00元"},{"words":"投注对应的奖金额)"},{"words":"(选顶固定奖金额为"},{"words":",000.00元"},{"words":"本票最高可能固定奖"},{"words":"单倍注数:3×1*1注;共"},{"words":"***"}]}
+def package_data(data):
+    # 用 \n 分隔字符串，返回列表
+    words_result=data.split('\n')
+    #删除空值
+    while '' in words_result:
+        #logger.info("null in words_result")
+        words_result.remove('')
+    #logger.info("words_result {0}".format(words_result))
+    #组装words_result字典列表（使用map函数）
+    words_result_r = list(map(str_to_dict, words_result))
+    #logger.info("words_result_r {0}".format(words_result_r))
+    data_r={}
+    data_r["log_id"] = 1
+    data_r["words_result_num"] = len(words_result_r)
+    data_r["words_result"] = words_result_r
+    return data_r

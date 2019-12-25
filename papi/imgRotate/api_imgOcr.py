@@ -73,7 +73,7 @@ def img_ocr(request):
     else:
         logger.info('BDocr')
         results=BDocr(savepath)
-    #logger.info('ocr results:{0}'.format(results))
+    logger.info('ocr results:{0}'.format(results))
 
     #百度识别原图像
     #results1 = BDocr(path)
@@ -96,7 +96,7 @@ def FKocr(path):
     image.save(path)
     code = pytesseract.image_to_string(image, lang='chi_sim')
     logger.info('FKocr results:{0}'.format(code))
-    return code
+    return utils.package_data(code)
 
 
 #调用百度图片OCR 识别图片文字，返回识别后的文字
