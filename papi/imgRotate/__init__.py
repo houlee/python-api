@@ -1,4 +1,4 @@
-import os
+import os,sys
 from apscheduler.schedulers.background import BackgroundScheduler
 from .global_data import g_ocr_type,g_count_bdocr
 from .utils import cache_set,cache_get
@@ -52,6 +52,16 @@ def para_init():
     logger.info("*** para init *** ")
     #设置环境变量
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'papi.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+
     # 用全局变量定义使用的ocr type，1 BDOCR; 2 FKOCR
     # 使用全局变量控制OCR类型，和传入参数无关，默认使用BDOCR，在BDOCR次数用尽后，使用FKOCR，每天零点，重置为1
     global g_ocr_type
