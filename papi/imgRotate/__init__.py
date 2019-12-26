@@ -1,10 +1,13 @@
-import mylog
 import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from .global_data import g_ocr_type,g_count_bdocr
 
 #日志初始化
-logger = mylog.Logger(logname='./log/imgRotate.log', loglevel=1, logger="imgRotate-app").getlog()
+#import mylog
+#logger = mylog.Logger(logname='./log/xxx.log', loglevel=1, logger="imgRotate-app").getlog()
+
+import logging
+logger = logging.getLogger('log')
 logger.info("project starting ...")
 val=os.popen('pwd').read()
 logger.info('project path:{0}'.format(val))

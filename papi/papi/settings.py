@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import time
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,12 +126,95 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+#日志配置
+cur_path = os.path.dirname(os.path.realpath(__file__))  # log_path是存放日志的路径
+log_path = os.path.join(os.path.dirname(cur_path), 'log')
+if not os.path.exists(log_path): os.mkdir(log_path)  # 如果不存在这个logs文件夹，就自动创建一个
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        # 日志格式
+        'standard': {
+#格式 描述%(name)s 记录器的名称 %(levelno)s 数字形式的日志记录级别 %(levelname)s 日志记录级别的文本名称 %(filename)s 执行日志记录调用的源文件的文件名称
+#%(pathname)s 执行日志记录调用的源文件的路径名称 %(funcName)s 执行日志记录调用的函数名称 %(module)s 执行日志记录调用的模块名称 %(lineno)s 执行日志记录调用的行号 %(created)s 执行日志记录的时间
+#%(asctime)s 日期和时间 %(msecs)s 毫秒部分 %(thread)d 线程ID %(threadName)s 线程名称 %(process)d 进程ID %(message)s 记录的消息
+            'format': '[%(asctime)s] [%(filename)s:%(lineno)d] [%(module)s:%(funcName)s] [%(process)d]'
+                      '[%(levelname)s]- %(message)s'},
+        'simple': {  # 简单格式
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    # 过滤
+    'filters': {
+    },
+    # 定义具体处理日志的方式
+    'handlers': {
+        # 默认记录所有日志
+        'default': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(log_path, 'all-{}.log'.format(time.strftime('%Y-%m-%d'))),
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份数
+            'formatter': 'standard',  # 输出格式
+            'encoding': 'utf-8',  # 设置默认编码，否则打印出来汉字乱码
+        },
+        # 输出错误日志
+        'error': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(log_path, 'error-{}.log'.format(time.strftime('%Y-%m-%d'))),
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份数
+            'formatter': 'standard',  # 输出格式
+            'encoding': 'utf-8',  # 设置默认编码
+        },
+        # 控制台输出
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+
+        #注释掉info日志
+        # 输出info日志
+        #'info': {
+        #    'level': 'INFO',
+        #    'class': 'logging.handlers.RotatingFileHandler',
+        #    'filename': os.path.join(log_path, 'info-{}.log'.format(time.strftime('%Y-%m-%d'))),
+        #    'maxBytes': 1024 * 1024 * 5,
+        #    'backupCount': 5,
+        #    'formatter': 'standard',
+        #    'encoding': 'utf-8',  # 设置默认编码
+        #},
+
+    },
+    # 配置用哪几种 handlers 来处理日志
+    'loggers': {
+        # 类型 为 django 处理所有类型的日志， 默认调用
+        'django': {
+            'handlers': ['default', 'console'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        # log 调用时需要当作参数传入
+        'log': {
+            'handlers': ['error', 'console', 'default'],
+            'level': 'INFO',
+            'propagate': True
+        },
+    }
+}
+
+
 '''
 CRONJOBS = [
     # 每天0：05执行
-    #('05 0 * * *', 'imgRotate.job.reset_data', '>>/Users/houlee/Documents/git_dev/python-api/papi/log/imgRotate.log')
+    #('05 0 * * *', 'imgRotate.job.reset_data', '>>/Users/houlee/Documents/git_dev/python-api/papi/log/xxx.log')
     # 每分钟执行
-    ('*/1 * * * *', 'imgRotate.job.resetData', '>>/Users/houlee/Documents/git_dev/python-api/papi/log/imgRotate.log')
+    ('*/1 * * * *', 'imgRotate.job.resetData', '>>/Users/houlee/Documents/git_dev/python-api/papi/log/xxx.log')
  ]
 
  第一个参数（表示时间）：

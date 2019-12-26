@@ -3,7 +3,9 @@ import pytesseract
 from PIL import Image
 #pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
 #必须要能识别出线条，否则会报错
-
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
 def ocr(path):
     # image = Image.open("./img/test04r01.jpg")

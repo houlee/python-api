@@ -3,8 +3,11 @@
 
 from . import utils
 import cv2
-from imgRotate import logger
+#from imgRotate import logger
 import pyzbar.pyzbar as pyzbar
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
 def barcode_detect(image_path):
     # 判断是否网络图片还是本地图片

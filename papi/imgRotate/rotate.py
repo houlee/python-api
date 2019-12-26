@@ -3,7 +3,10 @@ import numpy as np
 import cv2
 import math
 from . import utils
-from imgRotate import logger
+#from imgRotate import logger
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
 #pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
 #必须要能识别出线条，否则会报错

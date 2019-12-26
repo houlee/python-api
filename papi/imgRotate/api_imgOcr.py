@@ -12,7 +12,9 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from aip import AipOcr
 import os
-from imgRotate import logger
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
 @csrf_exempt
 @api_view(http_method_names=['post'])                #只允许 post

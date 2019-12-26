@@ -5,11 +5,14 @@ import cv2
 import requests
 import sys
 sys.path.append("..")
-import mylog
+#import mylog
 from imgRotate.global_data import g_count_bdocr,g_ocr_type
 import os
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
-logger = mylog.Logger(logname='./log/imgRotate_test.log', loglevel=1, logger="hou").getlog()
+#logger = mylog.Logger(logname='./log/xxx.log', loglevel=1, logger="hou").getlog()
 
 def showAndWaitKey1(winName, img):
     cv2.imshow(winName, img)
@@ -34,9 +37,9 @@ def test03():
     url= 'http://papi.nb.com/imgOcr/'
     #url_list=['http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818216084494.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818918131785.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818019831903.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759144144043760.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015758418141947957.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756942297074845.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756508813261853.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756382795891839.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756382141356461.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015718049603469182.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015742476088588479.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015740783413702498.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015739062897325164.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015750235922624129.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015749386814174360.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015747684238389457.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015747683640417640.jpg']
     url_list=['http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg','https://public.zgzcw.com/d/images/201910291572328653220_872.png']
-    #url_list = ['./imgRotate/img/test19.jpg']
+    #url_list = ['./imgRotate/img/lottery.jpg']
     for u in url_list:
-        data = {'url': u, 'type': 2}
+        data = {'url': u, 'type': 1}
         # data = {'url': "./imgRotate/img/test19.jpg", 'type': 1}
         h = requests.post(url, json=data)
         logger.info('test03:{0}'.format(h.text))

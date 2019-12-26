@@ -2,7 +2,10 @@
 import cv2
 import urllib
 import numpy as np
-from imgRotate import logger
+#from imgRotate import logger
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
 #util
 # URL到图片
