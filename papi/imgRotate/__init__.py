@@ -50,6 +50,8 @@ scheduler.start()
 
 def para_init():
     logger.info("*** para init *** ")
+    #设置环境变量
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'papi.settings')
     # 用全局变量定义使用的ocr type，1 BDOCR; 2 FKOCR
     # 使用全局变量控制OCR类型，和传入参数无关，默认使用BDOCR，在BDOCR次数用尽后，使用FKOCR，每天零点，重置为1
     global g_ocr_type

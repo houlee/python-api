@@ -85,7 +85,7 @@ def namestr(obj, namespace):
 #key 参数   val 参数的值
 def cache_set(key,val):
     #str = namestr(var,globals())
-    print("key: %s"%(key))
+    #print("key: %s"%(key))
     #cache.set(key,val,300)     #300秒过期
     cache.set(key, val)         #不过期
     logger.debug("cache_set: {0} value is {1}".format(key, val))
