@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import rotate
-from .utils import cache_set,cache_get
+from .utils import cache_set,cache_get,get_savepath,get_file_content
 from . import barcode
 from .global_data import g_ocr_type,g_count_bdocr
 import cv2
@@ -63,7 +63,7 @@ def img_ocr(request):
     rotateImg = rotate.rotate(path, degree[0])
 
     #获取保存图片地址并保存旋转后的图片
-    savepath=utils.get_savepath(path)
+    savepath = get_savepath(path)
     logger.info('temp img savepath:{0}'.format(savepath))
 
     cv2.imwrite(savepath, rotateImg)
@@ -137,7 +137,7 @@ def BDocr(url):
     else:  # 本地图片
         #print("BDocr local pic")
         """ 读取图片 """
-        image = utils.get_file_content(url)
+        image = get_file_content(url)
         """ 带参数调用通用文字识别, 图片参数为本地图片 """
         results = client.basicGeneral(image, options)  # 普通版  每天免费5万次
         #results = client.basicAccurate(image, options)      #高精度版   每天免费500次
