@@ -24,6 +24,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'/app/python-api/papi/static/')
 SECRET_KEY = '1rxoabyeto7@gh9(l+bwukv^*&=lm4-$y*z^lh^32oew@#d5#r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+#DEBUG = True
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']

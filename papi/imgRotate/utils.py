@@ -3,6 +3,8 @@ import cv2
 import urllib
 import numpy as np
 #from imgRotate import logger
+from .global_data import g_debug
+
 #日志设置
 import logging
 logger = logging.getLogger('log')
@@ -27,8 +29,11 @@ def get_file_content(filePath):
 
 #根据path生成savepath。 xxxx.jpg 生成  xxxxresult.jpg
 def get_savepath(path):
-    IMAGE_ROOT = "/app/python-api/papi/image_temp"
-    #IMAGE_ROOT = "/Users/houlee/Documents/git_dev/python-api/papi/image_temp"      #本地测试路径
+    if g_debug:
+        IMAGE_ROOT = "/Users/houlee/Documents/git_dev/python-api/papi/image_temp"  # 本地测试路径
+    else:
+        IMAGE_ROOT = "/app/python-api/papi/image_temp"
+
     # 查找文件名后缀位置
     #print("get_savepath")
     #print(path)
