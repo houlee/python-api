@@ -90,6 +90,13 @@ DATABASES = {
 #    }
 }
 
+#django CACHE
+CACHES = {
+'default': {
+'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+'LOCATION': 'papi-var-cache'
+}
+}
 
 
 # Password validation

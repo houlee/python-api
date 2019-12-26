@@ -6,7 +6,8 @@ import requests
 import sys
 sys.path.append("..")
 #import mylog
-from imgRotate import global_data
+from imgRotate.global_data import g_debug,g_ocr_type,g_count_bdocr
+from imgRotate.utils import cache_get,cache_set,namestr
 import os
 #日志设置
 import logging
@@ -31,7 +32,7 @@ def test02():
     logger.info('test02:{0}'.format(h.text))
 
 def test03():
-    if global_data.g_debug:
+    if g_debug:
         url = 'http://127.0.0.1:8000/imgOcr/'
     else:
         url = 'http://papi.nb.com/imgOcr/'
@@ -88,7 +89,28 @@ def test05():
 
 ### test code
 
-print(global_data.g_debug)
+def test10():
+    global g_ocr_type
+    global g_count_bdocr
+    print("*** job resetData init *** ")
+
+    # 从 django cache读取变量
+    g_ocr_type = cache_get("g_ocr_type")
+    g_count_bdocr = cache_get("g_count_bdocr")
+
+    print("*** job resetData *** ")
+    print("*** job resetData before *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type, g_count_bdocr))
+
+    # 重置变量
+    g_ocr_type = cache_set("g_ocr_type", 2)
+    g_count_bdocr = cache_set("g_count_bdocr", 0)
+    g_ocr_type = cache_get("g_ocr_type")
+    g_count_bdocr = cache_get("g_count_bdocr")
+    # os.popen("touch /Users/houlee/Documents/git_dev/python-api/papi/1.txt")
+    print("*** job resetData after *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type, g_count_bdocr))
+    print("*** job resetData *** ")
+
+print(g_debug)
 
 if __name__ == '__main__':
     #test01()
@@ -97,6 +119,7 @@ if __name__ == '__main__':
         test03()
     #test04()
     #test05()
+    #test10()
 
 
 

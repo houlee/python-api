@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import rotate
-from . import utils
+from .utils import cache_set,cache_get
 from . import barcode
 from .global_data import g_ocr_type,g_count_bdocr
 import cv2
@@ -68,6 +68,8 @@ def img_ocr(request):
 
     cv2.imwrite(savepath, rotateImg)
 
+    # django cache读取变量
+    g_ocr_type = cache_get(g_ocr_type)
     #if type == 2:
     if g_ocr_type == 2:       #使用全局变量控制，和传入参数无关，默认使用BDOCR，在BDOCR次数用尽后，使用FKOCR
         logger.info('FKocr')
@@ -104,8 +106,13 @@ def FKocr(path):
 #调用百度图片OCR 识别图片文字，返回识别后的文字
 def BDocr(url):
     global g_count_bdocr,g_ocr_type
+    # 从 django cache读取变量
+    g_count_bdocr = cache_get("g_count_bdocr")
+
     g_count_bdocr = g_count_bdocr + 1
+    g_count_bdocr = cache_set("g_count_bdocr", g_count_bdocr)
     logger.info('count of BDocr:{0}'.format(g_count_bdocr))
+
     #百度参数
     """ 你的 APPID AK SK """
     APP_ID = '18032299'
@@ -140,6 +147,8 @@ def BDocr(url):
     #print('error_code' in results)
     if 'error_code' in results:
         g_ocr_type = 2        #后续调用FKOCR
+        g_ocr_type = cache_set("g_ocr_type", g_ocr_type)
+
         logger.error('BDocr Open api daily request limit reached!!!,count,g_ocr_type:{0}'.format((g_count_bdocr,g_ocr_type)))
         return {}
     return results

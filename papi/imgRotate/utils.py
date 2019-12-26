@@ -3,8 +3,9 @@ import cv2
 import urllib
 import numpy as np
 #from imgRotate import logger
+from django.conf import settings
+from django.core.cache import cache
 from .global_data import g_debug
-
 #日志设置
 import logging
 logger = logging.getLogger('log')
@@ -75,3 +76,25 @@ def package_data(data):
     data_r["words_result_num"] = len(words_result_r)
     data_r["words_result"] = words_result_r
     return data_r
+
+#获取变量的名字字符串
+def namestr(obj, namespace):
+    return [name for name in namespace if namespace[name] == obj]
+
+
+#key 参数   val 参数的值
+def cache_set(key,val):
+    #str = namestr(var,globals())
+    print("key: %s"%(key))
+    #cache.set(key,val,300)     #300秒过期
+    cache.set(key, val)         #不过期
+    logger.debug("cache_set: {0} value is {1}".format(key, val))
+    return val
+
+#key 参数   key 如果不存在，则返回none
+def cache_get(key):
+    #str = namestr(var, globals())
+    val = cache.get(key)
+    logger.debug("cache_get: {0} value is {1}".format(key, val))
+    return val
+

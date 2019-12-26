@@ -1,6 +1,7 @@
 import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from .global_data import g_ocr_type,g_count_bdocr
+from .utils import cache_set,cache_get
 
 #日志初始化
 #import mylog
@@ -23,10 +24,16 @@ logger.info('project path:{0}'.format(val))
 def job_resetData():
     global g_ocr_type
     global g_count_bdocr
+    #从 django cache读取变量
+    g_ocr_type = cache_get(g_ocr_type)
+    g_count_bdocr = cache_get(g_count_bdocr)
+
     logger.info("*** job resetData *** ")
     logger.info("*** job resetData before *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
-    g_ocr_type = 1
-    g_count_bdocr = 0
+
+    #重置变量
+    g_ocr_type = cache_set("g_ocr_type",1)
+    g_count_bdocr = cache_set("g_count_bdocr", 0)
     #os.popen("touch /Users/houlee/Documents/git_dev/python-api/papi/1.txt")
     logger.info("*** job resetData after *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
     logger.info("*** job resetData *** ")
@@ -40,6 +47,21 @@ scheduler = BackgroundScheduler()
 #每天0:05执行
 scheduler.add_job(job_resetData, 'cron', hour='0',minute='5',day='*/1')
 scheduler.start()
+
+def para_init():
+    logger.info("*** para init *** ")
+    # 用全局变量定义使用的ocr type，1 BDOCR; 2 FKOCR
+    # 使用全局变量控制OCR类型，和传入参数无关，默认使用BDOCR，在BDOCR次数用尽后，使用FKOCR，每天零点，重置为1
+    global g_ocr_type
+    g_ocr_type = 1
+    cache_set("g_ocr_type", g_ocr_type)
+
+    # 计数百度OCR调用次数，重启或零点重置为0
+    global g_count_bdocr
+    g_count_bdocr = 0
+    cache_set("g_count_bdocr", g_count_bdocr)
+
+para_init()
 
 '''
 year (int|str) – 4-digit year
