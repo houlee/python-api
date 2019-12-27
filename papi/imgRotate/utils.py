@@ -2,8 +2,7 @@
 import cv2
 import urllib
 import numpy as np
-#from imgRotate import logger
-from django.conf import settings
+import uuid
 from django.core.cache import cache
 from .global_data import g_debug
 #日志设置
@@ -81,20 +80,73 @@ def package_data(data):
 def namestr(obj, namespace):
     return [name for name in namespace if namespace[name] == obj]
 
+####################################################################################
+#django cache #
+####################################################################################
+class CacheLock(object):
+    def __init__(self, expires=60, wait_timeout=0):
+        self.cache = cache
+        self.expires = expires  # 函数执行超时时间
+        self.wait_timeout = wait_timeout  # 拿锁等待超时时间
+
+    def get_lock(self, lock_key):
+        # 获取cache锁
+        #logger.info("get_lock")
+        wait_timeout = self.wait_timeout
+        identifier = uuid.uuid4()
+        while wait_timeout >= 0:
+            if self.cache.add(lock_key, identifier, self.expires):
+                #logger.info("get_lock identifier:{0}".format(identifier))
+                return identifier
+            wait_timeout -= 1
+            time.sleep(1)
+        raise LockTimeout({'msg': '当前有其他用户正在编辑该采集配置，请稍后重试'})
+
+    def release_lock(self, lock_key, identifier):
+        # 释放cache锁
+        lock_value = self.cache.get(lock_key)
+        if lock_value == identifier:
+            #logger.info("release_lock lock_value:{0}".format(lock_value))
+            self.cache.delete(lock_key)
+
+def lock(cache_lock):
+    def my_decorator(func):
+        def wrapper(*args, **kwargs):
+            lock_key = 'bk_monitor:lock:xxx' # 具体的lock_key要根据调用时传的参数而定
+            identifier = cache_lock.get_lock(lock_key)
+            try:
+                return func(*args, **kwargs)
+            finally:
+                cache_lock.release_lock(lock_key, identifier)
+        return wrapper
+    return my_decorator
 
 #key 参数   val 参数的值
+@lock(CacheLock())
 def cache_set(key,val):
     #str = namestr(var,globals())
     #print("key: %s"%(key))
     #cache.set(key,val,300)     #300秒过期
-    cache.set(key, val)         #不过期
-    logger.debug("cache_set: {0} value is {1}".format(key, val))
+    cache.set(key, val,2*24*60*60)         #2天不过期
+    #logger.debug("cache_set: {0} value is {1}".format(key, val))
     return val
 
 #key 参数   key 如果不存在，则返回none
+@lock(CacheLock())
 def cache_get(key):
     #str = namestr(var, globals())
     val = cache.get(key)
-    logger.debug("cache_get: {0} value is {1}".format(key, val))
+    #logger.debug("cache_get: {0} value is {1}".format(key, val))
     return val
 
+#key 参数   val 参数变动的值
+@lock(CacheLock())
+def cache_increase(key,val):
+    cache.incr(key,val)
+    tmp = cache.get(key)
+    #tmp = cache.get(key)
+    #logger.debug("cache_set: {0} value before is {1}".format(key, tmp))
+    #tmp = tmp + val
+    #cache.set(key, tmp, 2*24*60*60)         #2天不过期
+    #logger.debug("cache_set: {0} value after is {1}".format(key, tmp))
+    return tmp

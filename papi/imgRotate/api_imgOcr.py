@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import rotate
-from .utils import cache_set,cache_get,get_savepath,get_file_content
+from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content
 from . import barcode
 from .global_data import g_ocr_type,g_count_bdocr
 import cv2
@@ -107,10 +107,10 @@ def FKocr(path):
 def BDocr(url):
     global g_count_bdocr,g_ocr_type
     # 从 django cache读取变量
-    g_count_bdocr = cache_get("g_count_bdocr")
+    #g_count_bdocr = cache_get("g_count_bdocr")
 
-    g_count_bdocr = g_count_bdocr + 1
-    g_count_bdocr = cache_set("g_count_bdocr", g_count_bdocr)
+    #g_count_bdocr = g_count_bdocr + 1
+    g_count_bdocr = cache_increase("g_count_bdocr", 1)
     logger.info('count of BDocr:{0}'.format(g_count_bdocr))
 
     #百度参数

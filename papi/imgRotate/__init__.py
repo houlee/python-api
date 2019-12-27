@@ -25,8 +25,8 @@ def job_resetData():
     global g_ocr_type
     global g_count_bdocr
     #从 django cache读取变量
-    g_ocr_type = cache_get(g_ocr_type)
-    g_count_bdocr = cache_get(g_count_bdocr)
+    g_ocr_type = cache_get("g_ocr_type")
+    g_count_bdocr = cache_get("g_count_bdocr")
 
     logger.info("*** job resetData *** ")
     logger.info("*** job resetData before *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
@@ -34,6 +34,10 @@ def job_resetData():
     #重置变量
     g_ocr_type = cache_set("g_ocr_type",1)
     g_count_bdocr = cache_set("g_count_bdocr", 0)
+
+    #从 django cache读取变量
+    g_ocr_type = cache_get("g_ocr_type")
+    g_count_bdocr = cache_get("g_count_bdocr")
     #os.popen("touch /Users/houlee/Documents/git_dev/python-api/papi/1.txt")
     logger.info("*** job resetData after *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
     logger.info("*** job resetData *** ")
