@@ -2,6 +2,7 @@
 
 from imgRotate import ocr
 import cv2
+import aircv as ac
 import requests
 import sys
 sys.path.append("..")
@@ -44,7 +45,7 @@ def test03():
         data = {'url': u, 'type': 1}
         # data = {'url': "./imgRotate/img/test19.jpg", 'type': 1}
         h = requests.post(url, json=data)
-        logger.info('test03:{0}'.format(h.text))
+        print('test03:{0}'.format(h.text))
 
 
 def test04():
@@ -54,7 +55,7 @@ def test04():
     g_count_bdocr = 0
     print("jobjobjob")
     os.popen("touch /Users/houlee/Documents/git_dev/python-api/papi/1.txt")
-    logger.info("*** job resetData *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
+    print("*** job resetData *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type,g_count_bdocr))
 
 def test05():
     path = "./img/test11.jpeg"
@@ -110,16 +111,72 @@ def test10():
     print("*** job resetData after *** g_ocr_type={0}, g_count_bdocr={1}".format(g_ocr_type, g_count_bdocr))
     print("*** job resetData *** ")
 
+def test11():
+    url= 'http://127.0.0.1:8000/logoLocate/'
+    picurl = './imgRotate/img/zbb-pic01.png'
+    logourl = './imgRotate/img/logozbb01.png'
+    data = {'picurl': picurl, 'logourl': logourl}
+    h=requests.post(url,json=data)
+    print('test11:{0}'.format(h.text))
+
+
+# print circle_center_pos
+def draw_circle(img, pos, circle_radius, color, line_width):
+    cv2.circle(img, pos, circle_radius, color, line_width)
+    cv2.imshow('objDetect', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def draw_rectangle(img, pos0, pos3, color, line_width):
+    # cv2.rectangle()
+    # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
+    cv2.rectangle(img, pos0, pos3,color, line_width)
+    cv2.imshow('objDetect', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def test12():
+    imsrc = ac.imread('./imgRotate/img/zbb-pic02.png')
+    imobj = ac.imread('./imgRotate/img/logozbb01.png')
+
+    # find the match position
+    pos = ac.find_template(imsrc, imobj)
+    print(pos)
+
+    # draw circle
+    circle_center_pos = pos['result']
+    print(circle_center_pos)
+    center = []
+    for p in circle_center_pos:
+        #print(type(p))
+        p = int(p)
+        center.append(p)
+    print(center)
+    center_t = tuple(center)        #list 转换为 tuple
+    circle_radius = 50
+    color = (0, 255, 0)
+    line_width = 2
+    draw_circle(imsrc, center_t, circle_radius, color, line_width)
+
+    # draw rectangle
+    rectangle = pos['rectangle']
+    print(rectangle)
+    # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
+    draw_rectangle(imsrc, rectangle[0], rectangle[3],color, line_width)
+    #draw_rectangle(imsrc, (8,322), (126,352), color, line_width)
+
 print(g_debug)
 
 if __name__ == '__main__':
     #test01()
     #test02()
     #for i in range(30):
-        test03()
+        #test03()
     #test04()
     #test05()
     #test10()
+    test11()
+    #test12()
 
 
 

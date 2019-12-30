@@ -18,6 +18,7 @@ uwsgi = "*"
 pyzbar = "*"
 django-crontab = "*"
 apscheduler = "*"
+aircv = "*"
 
 [requires]
 python_version = "3.7"

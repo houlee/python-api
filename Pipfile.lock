@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "378c631df6dd15b58e149a6b590c95800dcece8094a1c9919c2885f9cb28e2fb"
+            "sha256": "2f0c1a5213bc2f430b49fc3e461b163697e38692da5026e7625f1cea2f10683d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,14 @@
         ]
     },
     "default": {
+        "aircv": {
+            "hashes": [
+                "sha256:2e6fb134fc67ee1000121f7156d8b827944e21d914a6ea6f6a734040886a5b9a",
+                "sha256:69ad013ce1cc7bc19ebdea0a62b1ff2569bad338cc8401d0f5c3e1b850c24c3d"
+            ],
+            "index": "pypi",
+            "version": "==1.4.6"
+        },
         "apscheduler": {
             "hashes": [
                 "sha256:3bb5229eed6fbbdafc13ce962712ae66e175aa214c69bed35a06bffcf0c5e244",
