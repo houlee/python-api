@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="271bc380-e14b-4027-8fdf-8875cf411e86" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/papi/imgRotate/api_gif.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/PAPI接口文档.docx" beforeDir="false" afterPath="$PROJECT_DIR$/doc/PAPI接口文档.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/papi/imgRotate/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/papi/imgRotate/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/papi/imgRotate/api_gif.py" beforeDir="false" afterPath="$PROJECT_DIR$/papi/imgRotate/api_gif.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/papi/imgRotate/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/papi/imgRotate/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/papi/papi/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/papi/papi/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/papi/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/papi/tests.py" afterDir="false" />
     </list>
@@ -18,7 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/python_api$tests.coverage" NAME="tests Coverage Results" MODIFIED="1577685801294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/papi" />
+    <SUITE FILE_PATH="coverage/python_api$tests.coverage" NAME="tests Coverage Results" MODIFIED="1577701392219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/papi" />
     <SUITE FILE_PATH="coverage/python_api$test.coverage" NAME="test Coverage Results" MODIFIED="1576222290998" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/papi/imgRotate" />
   </component>
   <component name="FileEditorManager">
@@ -35,17 +31,47 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/papi/imgRotate/api_imgOcr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+            <state relative-caret-position="201">
+              <caret line="61" column="26" selection-start-line="61" selection-start-column="26" selection-end-line="61" selection-end-column="26" />
+              <folding>
+                <element signature="e#24#44#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/papi/imgRotate/barcode.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/papi/imgRotate/rotate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="248">
+              <caret line="54" column="29" selection-start-line="54" selection-start-column="29" selection-end-line="54" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/papi/imgRotate/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="32" column="44" lean-forward="true" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/papi/imgRotate/api_gif.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+            <state relative-caret-position="329">
+              <caret line="56" column="61" lean-forward="true" selection-start-line="56" selection-start-column="61" selection-end-line="56" selection-end-column="61" />
               <folding>
                 <element signature="e#48#131#0" expanded="true" />
               </folding>
@@ -53,53 +79,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/papi/imgRotate/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="20" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/papi/papi/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1786">
-              <caret line="128" column="6" selection-start-line="128" selection-start-column="6" selection-end-line="128" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/papi/imgRotate/get_coordinate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/papi/imgRotate/gif_logo.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="18" column="59" lean-forward="true" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
-              <folding>
-                <element signature="e#24#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/papi/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="127" column="20" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="20" />
+            <state relative-caret-position="221">
+              <caret line="120" column="62" selection-start-line="120" selection-start-column="62" selection-end-line="120" selection-end-column="62" />
               <folding>
                 <element signature="e#25#50#0" expanded="true" />
               </folding>
@@ -127,8 +111,10 @@
         <option value="$PROJECT_DIR$/papi/imgRotate/test.py" />
         <option value="$PROJECT_DIR$/papi/imgRotate/get_coordinate.py" />
         <option value="$PROJECT_DIR$/papi/imgRotate/urls.py" />
-        <option value="$PROJECT_DIR$/papi/tests.py" />
+        <option value="$PROJECT_DIR$/papi/imgRotate/api_imgOcr.py" />
         <option value="$PROJECT_DIR$/papi/imgRotate/api_gif.py" />
+        <option value="$PROJECT_DIR$/papi/imgRotate/utils.py" />
+        <option value="$PROJECT_DIR$/papi/tests.py" />
       </list>
     </option>
   </component>
@@ -260,12 +246,12 @@
       <option name="presentableId" value="Default" />
       <updated>1576219442236</updated>
       <workItem from="1576219443315" duration="5913000" />
-      <workItem from="1577446991582" duration="8191000" />
+      <workItem from="1577446991582" duration="11090000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14104000" />
+    <option name="totallyTimeSpent" value="17003000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="814" extended-state="6" />
@@ -309,9 +295,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/papi/imgRotate/barcode.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/papi/imgRotate/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -322,13 +305,6 @@
     <entry file="file://$PROJECT_DIR$/papi/imgRotate/api_test.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/papi/imgRotate/rotate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1875">
-          <caret line="131" selection-start-line="131" selection-end-line="131" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/papi/imgRotate/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -336,24 +312,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/papi/papi/settings.py">
+    <entry file="file://$PROJECT_DIR$/papi/imgRotate/barcode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1786">
-          <caret line="128" column="6" selection-start-line="128" selection-start-column="6" selection-end-line="128" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/papi/imgRotate/api_imgOcr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/papi/imgRotate/get_coordinate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+        <state relative-caret-position="90">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -367,32 +329,84 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/papi/imgRotate/get_coordinate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/papi/papi/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1786">
+          <caret line="128" column="6" selection-start-line="128" selection-start-column="6" selection-end-line="128" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/papi/imgRotate/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="20" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="20" />
+        <state relative-caret-position="135">
+          <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/papi/tests.py">
+    <entry file="file://$USER_HOME$/.local/share/virtualenvs/python-api-S22uzeSR/lib/python3.7/site-packages/aircv/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="127" column="20" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="20" />
+        <state relative-caret-position="143">
+          <caret line="79" column="4" selection-start-line="79" selection-start-column="4" selection-end-line="79" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/papi/imgRotate/api_imgOcr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="61" column="26" selection-start-line="61" selection-start-column="26" selection-end-line="61" selection-end-column="26" />
           <folding>
-            <element signature="e#25#50#0" expanded="true" />
+            <element signature="e#24#44#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/papi/imgRotate/rotate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="54" column="29" selection-start-line="54" selection-start-column="29" selection-end-line="54" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.3/python_stubs/1568075944/cv2/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-505">
+          <caret line="7426" column="4" selection-start-line="7426" selection-start-column="4" selection-end-line="7426" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/papi/imgRotate/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="32" column="44" lean-forward="true" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/papi/imgRotate/api_gif.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+        <state relative-caret-position="329">
+          <caret line="56" column="61" lean-forward="true" selection-start-line="56" selection-start-column="61" selection-end-line="56" selection-end-column="61" />
           <folding>
             <element signature="e#48#131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/papi/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="120" column="62" selection-start-line="120" selection-start-column="62" selection-end-line="120" selection-end-column="62" />
+          <folding>
+            <element signature="e#25#50#0" expanded="true" />
           </folding>
         </state>
       </provider>

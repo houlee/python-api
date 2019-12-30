@@ -27,6 +27,24 @@ def get_file_content(filePath):
     with open(filePath, 'rb') as fp:
         return fp.read()
 
+#图片读取方法，兼容网络地址和本地地址
+#输入：path 图片地址，flag  同cv2.imread的flag参数  cv2.IMREAD_COLOR, cv2.IMREAD_GRAYSCALE
+#输出：cv2.imread的输出
+def image_read(path,flags=cv2.IMREAD_COLOR):
+    # 判断是否网络图片还是本地图片
+    if path.find('http') != -1:  # 网络图片
+        # print("network pic")
+        # 读取图片
+        src = url_to_image(path, flags)
+        # showAndWaitKey("src", src)
+    else:  # 本地图片
+        # print("local pic")
+        # 读取图片，灰度化
+        src = cv2.imread(path, flags)
+        # showAndWaitKey("src", src)
+    return src
+
+
 #根据path生成savepath。 xxxx.jpg 生成  xxxxresult.jpg
 def get_savepath(path):
     if g_debug:

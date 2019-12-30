@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #from . import gif_logo
-from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content
+from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content,image_read
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -38,7 +38,7 @@ def gif_logo_remove(request):
 @csrf_exempt
 @api_view(http_method_names=['post'])                #只允许 post
 @permission_classes((permissions.AllowAny,))
-#定位图片上水印logo位置
+#定位图片上水印logo位置      https://www.zhangshengrong.com/p/w4N7BxkJar/            https://www.helplib.cn/fansisi/aircv
 #输入：picurl  待处理pic地址；logourl   logo样本地址
 #输出：pic中logo的坐标
 def pic_logo_location(request):
@@ -46,17 +46,14 @@ def pic_logo_location(request):
     logger.info('logo_location para:{0}'.format(parameter))
     pic_path = parameter['picurl']
     logo_path = parameter['logourl']
-    #图片匹配logo位置     https://www.zhangshengrong.com/p/w4N7BxkJar/            https://www.helplib.cn/fansisi/aircv
 
-    imsrc = ac.imread(pic_path)
-    imlogo = ac.imread(logo_path)
+    imsrc = image_read(pic_path)
+    imlogo = image_read(logo_path)
 
     # find the match position
     results = ac.find_template(imsrc, imlogo)
-    logger.info('logo_location position:{0}'.format(results))
     #results = pos['rectangle']      #矩形坐标
     #results = pos['result']         #中心坐标
-
-
+    logger.info('logo_location position:{0}'.format(results))
 
     return Response({'data': results})

@@ -112,8 +112,13 @@ def test10():
     print("*** job resetData *** ")
 
 def test11():
-    url= 'http://127.0.0.1:8000/logoLocate/'
-    picurl = './imgRotate/img/zbb-pic01.png'
+    if g_debug:
+        url = 'http://127.0.0.1:8000/logoLocate/'
+    else:
+        url = 'http://papi.nb.com/logoLocate/'
+
+    #picurl = './imgRotate/img/zbb-pic01.png'
+    picurl = 'http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg'
     logourl = './imgRotate/img/logozbb01.png'
     data = {'picurl': picurl, 'logourl': logourl}
     h=requests.post(url,json=data)
