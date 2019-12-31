@@ -1,13 +1,12 @@
 [[source]]
 name = "pypi"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+url = "http://pypi.douban.com/simple"
 verify_ssl = false
 
 [dev-packages]
 
 [packages]
 numpy = "*"
-opencv-python = "*"
 pytesseract = "*"
 django = "*"
 djangorestframework = "*"
@@ -19,6 +18,8 @@ pyzbar = "*"
 django-crontab = "*"
 apscheduler = "*"
 aircv = "*"
+opencv-python = "==3.4.2.16"
+opencv-contrib-python = "==3.4.2.16"
 
 [requires]
 python_version = "3.7"

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-#from . import gif_logo
-from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content,image_read
+from .utils import image_read
+from .gif_logo import  get_gif_frame1
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -23,7 +23,7 @@ logger = logging.getLogger('log')
 def gif_logo_remove(request):
     parameter = request.data
     logger.info('gif_logo_remove para:{0}'.format(parameter))
-    #gif 解包     https://www.cnblogs.com/fly-kaka/p/11694011.html
+    #gif 解包     https://blog.csdn.net/qq_34440148/article/details/100667403     https://www.cnblogs.com/fly-kaka/p/11694011.html
 
     #图片匹配logo位置     https://www.zhangshengrong.com/p/w4N7BxkJar/            https://www.helplib.cn/fansisi/aircv
 
@@ -39,19 +39,40 @@ def gif_logo_remove(request):
 @api_view(http_method_names=['post'])                #只允许 post
 @permission_classes((permissions.AllowAny,))
 #定位图片上水印logo位置      https://www.zhangshengrong.com/p/w4N7BxkJar/            https://www.helplib.cn/fansisi/aircv
-#输入：picurl  待处理pic地址；logourl   logo样本地址
+#输入：picurl  待处理pic地址；logourl   logo样本地址；matchtype  0  模板匹配（完全匹配）   1   特征点匹配（模糊匹配）
 #输出：pic中logo的坐标
 def pic_logo_location(request):
     parameter = request.data
     logger.info('logo_location para:{0}'.format(parameter))
     pic_path = parameter['picurl']
     logo_path = parameter['logourl']
+    matchtype = parameter['matchtype']
 
-    imsrc = image_read(pic_path)
+    if pic_path.find('gif') != -1:
+        #gif 取首帧图片
+        logger.info('logo_location get gif')
+        imsrc = get_gif_frame1(pic_path)
+    else:
+        imsrc = image_read(pic_path)
     imlogo = image_read(logo_path)
 
     # find the match position
-    results = ac.find_template(imsrc, imlogo)
+    if matchtype == 1:
+        #特征点匹配
+        logger.info('logo_location find_sift')
+        try:
+            results = ac.find_sift(imsrc, imlogo)
+        except:
+            logger.error('logo_location find_sift error! picurl:{0}; logourl:{1}'.format(pic_path,logo_path))
+            results = []
+    else:
+        logger.info('logo_location find_template')
+        try:
+            results = ac.find_template(imsrc, imlogo)
+        except:
+            logger.error('logo_location find_template error! picurl:{0}; logourl:{1}'.format(pic_path,logo_path))
+            results = []
+
     #results = pos['rectangle']      #矩形坐标
     #results = pos['result']         #中心坐标
     logger.info('logo_location position:{0}'.format(results))
