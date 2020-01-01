@@ -119,10 +119,11 @@ def test11():
     else:
         url = 'http://papi.nb.com/logoLocate/'
 
-    picurl = './imgRotate/img/zbb-pic02.png'
-    #picurl = 'http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg'
+    #picurl = './imgRotate/img/zbb-pic02.png'
+    picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
     #picurl = 'http://wx4.sinaimg.cn/mw690/006ekxoggy1gad56jz0v0g30aa0587wj.gif'
-    logourl = './imgRotate/img/logo_zbb.png'
+    #logourl = './imgRotate/img/logo_zbb.png'
+    logourl = 'https://public.zgzcw.com/d/images/201912301577701547232_872.png'
     data = {'picurl': picurl, 'logourl': logourl, 'matchtype': 1}
     h=requests.post(url,json=data)
     print('test11:{0}'.format(h.text))
@@ -145,21 +146,21 @@ def draw_rectangle(img, pos0, pos3, color, line_width):
     #cv2.imwrite("./aaa.png", img)
 
 def test12():
-    #imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
-    #imobj = ac.imread('./imgRotate/img/hupologo01.jpg')
+    imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
+    imobj = ac.imread('./imgRotate/img/hupologo01.jpg')
 
-    imsrc = ac.imread('./imgRotate/img/zbb-pic02.png')
-    imobj = ac.imread('./imgRotate/img/logo_zbb.png')
+    #imsrc = ac.imread('./imgRotate/img/zbb-pic01.png')
+    #imobj = ac.imread('./imgRotate/img/logo_zbb.png')
 
     # find the match position
     #pos = ac.find_template(imsrc, imobj)
     #pos = ac.find_all_sift(imsrc, imobj,1)
-    try:
-        pos = ac.find_sift(imsrc, imobj)
-    except:
-        print("find_sift error")
-    else:
-        print(pos)
+    #try:
+    pos = ac.find_sift(imsrc, imobj)
+    #except: err
+    #    print("find_sift error %s"%err)
+    #else:
+    print(pos)
 
     # draw circle
     #circle_center_pos = pos['result']
