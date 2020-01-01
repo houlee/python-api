@@ -119,7 +119,7 @@ def test11():
     else:
         url = 'http://papi.nb.com/logoLocate/'
 
-    #picurl = './imgRotate/img/zbb-pic02.png'
+    #picurl = './imgRotate/img/zbb-pic01.png'
     picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
     #picurl = 'http://wx4.sinaimg.cn/mw690/006ekxoggy1gad56jz0v0g30aa0587wj.gif'
     #logourl = './imgRotate/img/logo_zbb.png'

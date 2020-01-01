@@ -5,6 +5,8 @@ import numpy as np
 import uuid
 from django.core.cache import cache
 from .global_data import g_debug
+import ssl
+context = ssl._create_unverified_context()
 #日志设置
 import logging
 logger = logging.getLogger('log')
@@ -14,7 +16,7 @@ logger = logging.getLogger('log')
 def url_to_image(url,color_type=cv2.IMREAD_COLOR):
     # download the image, convert it to a NumPy array, and then read
     # it into OpenCV format
-    resp = urllib.request.urlopen(url)
+    resp = urllib.request.urlopen(url,context=context)
     # bytearray将数据转换成（返回）一个新的字节数组
     # asarray 复制数据，将结构化数据转换成ndarray
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
