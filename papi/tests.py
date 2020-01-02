@@ -4,7 +4,8 @@ from imgRotate import ocr
 import cv2
 
 from urllib.request import urlretrieve
-import aircv as ac
+#import aircv as ac
+from imgRotate import ac
 import requests
 import sys
 sys.path.append("..")
@@ -146,11 +147,11 @@ def draw_rectangle(img, pos0, pos3, color, line_width):
     #cv2.imwrite("./aaa.png", img)
 
 def test12():
-    imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
-    imobj = ac.imread('./imgRotate/img/hupologo01.jpg')
+    #imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
+    #imobj = ac.imread('./imgRotate/img/hupologo01.jpg')
 
-    #imsrc = ac.imread('./imgRotate/img/zbb-pic01.png')
-    #imobj = ac.imread('./imgRotate/img/logo_zbb.png')
+    imsrc = ac.imread('./imgRotate/img/zbb-pic01.png')
+    imobj = ac.imread('./imgRotate/img/logo_zbb.png')
 
     # find the match position
     #pos = ac.find_template(imsrc, imobj)

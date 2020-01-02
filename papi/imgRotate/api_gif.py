@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 import os
 import cv2
-import aircv as ac
+from . import ac
 
 #日志设置
 import logging
@@ -62,15 +62,24 @@ def pic_logo_location(request):
         logger.info('logo_location find_sift')
         try:
             results = ac.find_sift(imsrc, imlogo)
-        except:
+        except Exception as e:
+            logger.error('logo_location find_template error:{0}'.format(e))
             logger.error('logo_location find_sift error! picurl:{0}; logourl:{1}'.format(pic_path,logo_path))
             results = []
     else:
         logger.info('logo_location find_template')
         try:
             results = ac.find_template(imsrc, imlogo)
-        except:
-            logger.error('logo_location find_template error! picurl:{0}; logourl:{1}'.format(pic_path,logo_path))
+            # 交换rectangle 2，3点的位置，符合左上左下右下右上的顺序
+            rec = list(results['rectangle'])
+            tmp = rec[2]
+            rec[2] = rec[3]
+            rec[3] = tmp
+            results['rectangle'] = tuple(rec)
+        except Exception as e:
+            logger.error('logo_location find_template error:{0}'.format(e))
+            #logger.error('logo_location find_template error traceback:{0}'.format(traceback.format_exc()))
+            logger.error('logo_location find_template error! picurl:{0}; logourl:{1}'.format(pic_path, logo_path))
             results = []
 
     #results = pos['rectangle']      #矩形坐标
