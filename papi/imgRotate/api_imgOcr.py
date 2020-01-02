@@ -52,7 +52,7 @@ def img_ocr(request):
     #获取原始图片地址和OCR类型
     path = parameter['url']
     type = parameter['type']
-    precision = 2
+    precision = 3
 
     #检测二维码
     if barcode.barcode_detect(path):
