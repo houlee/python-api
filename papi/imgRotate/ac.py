@@ -43,6 +43,9 @@ ref: <http://docs.opencv.org/modules/imgproc/doc/geometric_transformations.html#
 
 import cv2
 import numpy as np
+#日志设置
+import logging
+logger = logging.getLogger('log')
 
 __version__ = "0.1.x"  # 0.1.5 laster, version managed by pbr(tags) now
 __project_url__ = "https://github.com/netease/aircv"
@@ -230,17 +233,22 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
 
         if len(good) < min_match_count:
             break
+        logger.info("find_all_sift len(good) is :{0}".format(len(good)))
 
         sch_pts = np.float32([kp_sch[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
         img_pts = np.float32([kp_src[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
 
         # M是转化矩阵
         M, mask = cv2.findHomography(sch_pts, img_pts, cv2.RANSAC, 5.0)
-        matches_mask = mask.ravel().tolist()
+        #matches_mask = mask.ravel().tolist()
+        if M.all == None:
+            logger.error("find_all_sift mask is None!!!")
 
         # 计算四个角矩阵变换后的坐标，也就是在大图中的坐标
         h, w = im_search.shape[:2]
+        #print("h = %d; w=%d"%(h,w))
         pts = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(-1, 1, 2)
+
         dst = cv2.perspectiveTransform(pts, M)
 
         # trans numpy arrary to python list

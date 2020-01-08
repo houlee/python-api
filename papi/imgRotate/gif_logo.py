@@ -71,7 +71,7 @@ def get_gif_frame1(gifurl):
     #if ret == True:
     #    cv2.imshow('1', frame)
     #    cv2.waitKey()
-    #    cv2.imwrite('1.jpg', frame)
+    #    cv2.imwrite('1.png', frame)
     return frame
 
 
@@ -105,6 +105,7 @@ def remove_logo():
     cv2.imwrite(path_dst, img)      #保存图像
     cv2.destroyAllWindows()
 
+#获取图片上坐标值
 def get_coordinate():
     path = "image/1.png"
     path_dst = "image/1r01.png"
@@ -135,3 +136,40 @@ def get_coordinate():
     cv2.waitKey(0)
     print(a, b)
 
+#获取图片上HSV值 H：图像的色彩/色度；S：图像的饱和度；V：图像的亮度
+HSV = []
+def getpos(event,x,y,flags,param):
+    global HSV
+    if event==cv2.EVENT_LBUTTONDOWN:
+        print(HSV[y,x])
+
+def get_hsv(path):
+    image=cv2.imread(path)
+    global HSV
+    HSV=cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
+    #th2=cv2.adaptiveThreshold(imagegray,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
+    cv2.imshow("imageHSV",HSV)
+    cv2.imshow('image',image)
+    cv2.setMouseCallback("imageHSV",getpos)
+    cv2.waitKey(0)
+
+#对特定渠道的图片做HSV屏蔽
+#输入 img  读取的图像数据    channel  1：直播吧
+#输出 屏蔽后的图像数据
+def hsv_mask(img,channel):
+
+    #imsrc = cv2.imread('./imgRotate/img/zbb/zbb-pic01.png')
+
+    # 屏蔽图像
+    HSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    if channel == 1:
+        Lower = np.array([100, 150, 150])
+        Upper = np.array([110, 250, 250])
+    else:
+        #无屏蔽
+        Lower = np.array([0, 0, 0])
+        Upper = np.array([180, 255, 255])
+
+    mask = cv2.inRange(HSV, Lower, Upper)
+    resImg = cv2.bitwise_and(img, img, mask=mask)
+    return resImg

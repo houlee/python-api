@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .utils import image_read
-from .gif_logo import  get_gif_frame1
+from .gif_logo import  get_gif_frame1,hsv_mask
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -40,6 +40,7 @@ def gif_logo_remove(request):
 @permission_classes((permissions.AllowAny,))
 #定位图片上水印logo位置      https://www.zhangshengrong.com/p/w4N7BxkJar/            https://www.helplib.cn/fansisi/aircv
 #输入：picurl  待处理pic地址；logourl   logo样本地址；matchtype  0  模板匹配（完全匹配）   1   特征点匹配（模糊匹配）
+#channel 1：直播吧   2：虎扑
 #输出：pic中logo的坐标
 def pic_logo_location(request):
     parameter = request.data
@@ -47,6 +48,7 @@ def pic_logo_location(request):
     pic_path = parameter['picurl']
     logo_path = parameter['logourl']
     matchtype = parameter['matchtype']
+    channel = parameter['channel']
 
     if pic_path.find('gif') != -1:
         #gif 取首帧图片
@@ -55,6 +57,10 @@ def pic_logo_location(request):
     else:
         imsrc = image_read(pic_path)
     imlogo = image_read(logo_path)
+
+    #hsv mask
+    imsrc = hsv_mask(imsrc, channel)
+    imlogo = hsv_mask(imlogo, channel)
 
     # find the match position
     if matchtype == 1:
