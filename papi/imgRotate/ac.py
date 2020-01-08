@@ -241,7 +241,7 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
         # M是转化矩阵
         M, mask = cv2.findHomography(sch_pts, img_pts, cv2.RANSAC, 5.0)
         #matches_mask = mask.ravel().tolist()
-        if M.all == None:
+        if np.all(mask==0):
             logger.error("find_all_sift mask is None!!!")
 
         # 计算四个角矩阵变换后的坐标，也就是在大图中的坐标

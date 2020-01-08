@@ -6,7 +6,6 @@ import numpy as np
 from imgRotate import rotate
 from imgRotate import gif_logo
 from urllib.request import urlretrieve
-#import aircv as ac
 from imgRotate import ac
 import requests
 import sys
@@ -15,7 +14,7 @@ sys.path.append("..")
 from imgRotate.global_data import g_debug,g_ocr_type,g_count_bdocr
 from imgRotate.utils import cache_get,cache_set,namestr,get_savepath
 import os
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 #日志设置
 import logging
 logger = logging.getLogger('log')
@@ -123,9 +122,9 @@ def test11():
     else:
         url = 'http://papi.nb.com/logoLocate/'
 
-    #picurl = './imgRotate/img/zbb-pic05.png'
+    picurl = './imgRotate/img/zbb-pic05.png'
     #picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
-    picurl = 'http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif'
+    #picurl = 'http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif'
     logourl = './imgRotate/img/zbb-logo03.png'
     #logourl = 'https://public.zgzcw.com/d/images/201912301577701547232_872.png'
     data = {'picurl': picurl, 'logourl': logourl, 'matchtype': 1,'channel':1}
@@ -249,8 +248,8 @@ if __name__ == '__main__':
     #test04()
     #test05()
     #test10()
-    #test11()       #test pic logo api
-    test12()       #test pic logo gif_logo function
+    test11()       #test pic logo api
+    #test12()       #test pic logo gif_logo function
     #test13()       #test pic logo local
     #test14()
     #test20()
