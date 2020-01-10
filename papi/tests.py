@@ -122,10 +122,11 @@ def test11():
     else:
         url = 'http://papi.nb.com/logoLocate/'
 
-    picurl = './imgRotate/img/zbb-pic05.png'
+    #picurl = './imgRotate/img/zbb-pic05.png'
     #picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
+    picurl = 'http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif'
     #picurl = 'http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif'
-    logourl = './imgRotate/img/zbb-logo03.png'
+    logourl = './imgRotate/img/zbb-logo01.png'
     #logourl = 'https://public.zgzcw.com/d/images/201912301577701547232_872.png'
     data = {'picurl': picurl, 'logourl': logourl, 'matchtype': 1,'channel':1}
     h=requests.post(url,json=data)
@@ -153,10 +154,19 @@ def test12():
     #imobj1 = ac.imread('./imgRotate/img/hupologo01.jpg')
     #imsrc = gif_logo.hsv_mask(imsrc1,2)
     #imobj = gif_logo.hsv_mask(imobj1,2)
-    #imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif')
-    imsrc1 = ac.imread('./imgRotate/img/zbb-pic06.png')
-    imobj1 = ac.imread('./imgRotate/img/zbb-logo03.png')
-    imsrc = gif_logo.hsv_mask(imsrc1,1)
+    imsrc1 = gif_logo.get_gif_frame1('http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif')
+    #imsrc1 = ac.imread('./imgRotate/img/zbb-pic08.png')
+    imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
+
+#取四分之一图像
+    height, width = imsrc1.shape[:2]
+    print(height)
+    print(width)
+    imsrc2 = imsrc1[height // 2:height, 0:width // 2]
+    cv2.imshow('quater', imsrc2)
+    cv2.waitKey()
+
+    imsrc = gif_logo.hsv_mask(imsrc2,1)
     imobj = gif_logo.hsv_mask(imobj1,1)
     # find the match position
     pos = ac.find_sift(imsrc, imobj)
@@ -169,6 +179,24 @@ def test12():
     print(rectangle)
     cv2.imshow('mask', imsrc)
     cv2.waitKey()
+
+    #恢复坐标
+    rectangle = []  # 矩形坐标
+    for item in pos['rectangle']:
+        a = list(item)
+        a[1]=a[1]+height // 2
+        a=tuple(a)
+        rectangle.append(a)
+    center = list(pos['result'])  # 中心坐标
+    center[1]=center[1]+height // 2
+    center=tuple(center)
+    pos['result']=center
+    pos['rectangle'] = rectangle
+    print(rectangle)
+    print(center)
+
+
+
     # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
     draw_rectangle(imsrc1, rectangle[0], rectangle[2],color, line_width)
     #draw_rectangle(imsrc, (8,322), (126,352), color, line_width)
@@ -176,7 +204,7 @@ def test12():
 def test13():
     #imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
     #imobj = ac.imread('./imgRotate/img/hupologo01.jpg')
-    imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif')
+    imsrc1 = gif_logo.get_gif_frame1('http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif')
 
     #imsrc1 = cv2.imread('./imgRotate/img/zbb-pic04.png')
     imobj1 = cv2.imread('./imgRotate/img/zbb-logo03.png')

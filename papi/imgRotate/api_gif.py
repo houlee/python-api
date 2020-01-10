@@ -56,12 +56,16 @@ def pic_logo_location(request):
         imsrc = get_gif_frame1(pic_path)
     else:
         imsrc = image_read(pic_path)
+    if channel==1:
+        #直播吧取左下四分之一图像
+        logger.info('logo_location zbb 1/4')
+        height, width = imsrc.shape[:2]
+        imsrc = imsrc[height // 2:height, 0:width // 2]
     imlogo = image_read(logo_path)
 
     #hsv mask
     imsrc = hsv_mask(imsrc, channel)
     imlogo = hsv_mask(imlogo, channel)
-
     # find the match position
     if matchtype == 1:
         #特征点匹配
@@ -91,5 +95,22 @@ def pic_logo_location(request):
     #results = pos['rectangle']      #矩形坐标
     #results = pos['result']         #中心坐标
     logger.info('logo_location position:{0}'.format(results))
+    if channel==1:
+        #直播吧恢复坐标，从左下四分之一图像
+        # 恢复矩形坐标
+        rectangle = []
+        for item in results['rectangle']:
+            a = list(item)
+            a[1] = a[1] + height // 2
+            a = tuple(a)
+            rectangle.append(a)
+        # 恢复中心坐标
+        center = list(results['result'])
+        center[1] = center[1] + height // 2
+        center = tuple(center)
+
+        results['result'] = center
+        results['rectangle'] = rectangle
+        logger.info('logo_location position zbb:{0}'.format(results))
 
     return Response({'data': results})
