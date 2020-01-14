@@ -124,7 +124,7 @@ def test11():
 
     #picurl = './imgRotate/img/zbb-pic05.png'
     #picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
-    picurl = 'http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif'
+    picurl = 'http://wx1.sinaimg.cn/mw690/006foVpjgy1gauh470dvmg309l04rqv7.gif'
     #picurl = 'http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif'
     logourl = './imgRotate/img/zbb-logo01.png'
     #logourl = 'https://public.zgzcw.com/d/images/201912301577701547232_872.png'
@@ -206,7 +206,7 @@ def test121():
     #imobj1 = ac.imread('./imgRotate/img/hupologo01.jpg')
     #imsrc = gif_logo.hsv_mask(imsrc1,2)
     #imobj = gif_logo.hsv_mask(imobj1,2)
-    imsrc1 = gif_logo.get_gif_frame1('http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif')
+    imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/006foVpjgy1gauh470dvmg309l04rqv7.gif')
     #imsrc1 = ac.imread('./imgRotate/img/zbb-pic08.png')
     imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
 
@@ -231,6 +231,8 @@ def test121():
     print(pos)
 
     #恢复坐标
+    if pos == None:
+        return pos
     results00 = gif_logo.co_quarter2full(width_pic, height_pic, pos)
     print("results00:%s"%(results00))
 

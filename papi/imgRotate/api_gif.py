@@ -98,7 +98,7 @@ def pic_logo_location(request):
     #results = pos['rectangle']      #矩形坐标
     #results = pos['result']         #中心坐标
     logger.info('logo_location position:{0}'.format(results))
-    if channel==1:
+    if channel==1 and (results != None):
         #直播吧恢复坐标，从左下四分之一图像
         results = co_quarter2full(width_pic,height_pic,results)
         logger.info('logo_location position 00:{0}'.format(results))
