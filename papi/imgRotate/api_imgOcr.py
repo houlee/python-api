@@ -110,8 +110,8 @@ def BDocr(url):
     #g_count_bdocr = cache_get("g_count_bdocr")
 
     #g_count_bdocr = g_count_bdocr + 1
-    g_count_bdocr = cache_increase("g_count_bdocr", 1)
-    logger.info('count of BDocr:{0}'.format(g_count_bdocr))
+    #g_count_bdocr = cache_increase("g_count_bdocr", 1)
+    #logger.info('count of BDocr:{0}'.format(g_count_bdocr))
 
     #百度参数
     """ 你的 APPID AK SK """
