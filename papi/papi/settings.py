@@ -162,9 +162,13 @@ LOGGING = {
         # 默认记录所有日志
         'default': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(log_path, 'all-{}.log'.format(time.strftime('%Y-%m-%d'))),
-            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            #'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.TimedRotatingFileHandler',  # 按时间切割日志
+            #'filename': os.path.join(log_path, 'all-{}.log'.format(time.strftime('%Y-%m-%d'))),
+            'filename': os.path.join(log_path, 'all.log'),
+            #'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'when': 'midnight',
+            'interval': 1,
             'backupCount': 5,  # 备份数
             'formatter': 'standard',  # 输出格式
             'encoding': 'utf-8',  # 设置默认编码，否则打印出来汉字乱码
