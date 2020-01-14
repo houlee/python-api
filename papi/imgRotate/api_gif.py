@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .utils import image_read
-from .gif_logo import  get_gif_frame1,hsv_mask
+from .gif_logo import  get_gif_frame1,hsv_mask,co_quarter2full,gen_coordinate_from_center
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -56,12 +56,15 @@ def pic_logo_location(request):
         imsrc = get_gif_frame1(pic_path)
     else:
         imsrc = image_read(pic_path)
+    imlogo = image_read(logo_path)
+
     if channel==1:
         #直播吧取左下四分之一图像
         logger.info('logo_location zbb 1/4')
-        height, width = imsrc.shape[:2]
-        imsrc = imsrc[height // 2:height, 0:width // 2]
-    imlogo = image_read(logo_path)
+        height_pic, width_pic = imsrc.shape[:2]
+        imsrc = imsrc[height_pic // 2:height_pic, 0:width_pic // 2]
+        height_logo, width_logo = imlogo.shape[:2]
+
 
     #hsv mask
     imsrc = hsv_mask(imsrc, channel)
@@ -97,20 +100,12 @@ def pic_logo_location(request):
     logger.info('logo_location position:{0}'.format(results))
     if channel==1:
         #直播吧恢复坐标，从左下四分之一图像
-        # 恢复矩形坐标
-        rectangle = []
-        for item in results['rectangle']:
-            a = list(item)
-            a[1] = a[1] + height // 2
-            a = tuple(a)
-            rectangle.append(a)
-        # 恢复中心坐标
-        center = list(results['result'])
-        center[1] = center[1] + height // 2
-        center = tuple(center)
+        results = co_quarter2full(width_pic,height_pic,results)
+        logger.info('logo_location position 00:{0}'.format(results))
+        #以center为中心，按logo 2倍大小生成返回的矩形坐标
+        factor = 0.7  # 缩放比例
+        results = gen_coordinate_from_center(width_logo,height_logo,width_pic,height_pic,results,factor)
+        logger.info('logo_location position 11:{0}'.format(results))
 
-        results['result'] = center
-        results['rectangle'] = rectangle
-        logger.info('logo_location position zbb:{0}'.format(results))
 
     return Response({'data': results})

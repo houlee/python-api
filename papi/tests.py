@@ -140,10 +140,10 @@ def draw_circle(img, pos, circle_radius, color, line_width):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def draw_rectangle(img, pos0, pos3, color, line_width):
+def draw_rectangle(img, pos0, pos2, color, line_width):
     # cv2.rectangle()
     # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
-    cv2.rectangle(img, pos0, pos3,color, line_width)
+    cv2.rectangle(img, pos0, pos2,color, line_width)
     cv2.imshow('objDetect', img)
     cv2.waitKey()
     cv2.destroyAllWindows()
@@ -200,6 +200,65 @@ def test12():
     # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
     draw_rectangle(imsrc1, rectangle[0], rectangle[2],color, line_width)
     #draw_rectangle(imsrc, (8,322), (126,352), color, line_width)
+
+def test121():
+    #imsrc1 = ac.imread('./imgRotate/img/hupu001.jpg')
+    #imobj1 = ac.imread('./imgRotate/img/hupologo01.jpg')
+    #imsrc = gif_logo.hsv_mask(imsrc1,2)
+    #imobj = gif_logo.hsv_mask(imobj1,2)
+    imsrc1 = gif_logo.get_gif_frame1('http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif')
+    #imsrc1 = ac.imread('./imgRotate/img/zbb-pic08.png')
+    imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
+
+#取四分之一图像
+    #直播吧取左下四分之一图像
+    height_pic, width_pic = imsrc1.shape[:2]
+    print("heightpic %d;widthpic %d"%(height_pic,width_pic))
+    imsrc2 = imsrc1[height_pic // 2:height_pic, 0:width_pic // 2]
+    height_logo, width_logo = imobj1.shape[:2]
+    print("height_logo %d;width_logo %d" % (height_logo, width_logo))
+    cv2.imshow('quater', imsrc2)
+    cv2.waitKey()
+
+    imsrc = gif_logo.hsv_mask(imsrc2,1)
+    imobj = gif_logo.hsv_mask(imobj1,1)
+
+    cv2.imshow('mask', imsrc)
+    cv2.waitKey()
+
+    # find the match position
+    pos = ac.find_sift(imsrc, imobj)
+    print(pos)
+
+    #恢复坐标
+    results00 = gif_logo.co_quarter2full(width_pic, height_pic, pos)
+    print("results00:%s"%(results00))
+
+    # 画中心点
+    point = results00['result']
+    point_size = 1
+    color = (0, 0, 255)  # BGR
+    thickness = 4  # 可以为 0 、4、8
+    cv2.circle(imsrc1, point, point_size, color, thickness)
+
+    # draw rectangle
+    # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
+    color = (0, 255, 0)
+    line_width = 2
+    rectangle = results00['rectangle']
+    draw_rectangle(imsrc1, rectangle[0], rectangle[2], color, line_width)
+
+    # 以center为中心，按logo 2倍大小生成返回的矩形坐标
+    factor = 0.7  # 缩放比例
+    results01 = gif_logo.gen_coordinate_from_center(width_logo, height_logo, width_pic, height_pic, results00,factor)
+    print("results01:%s"%(results01))
+
+    # draw rectangle
+    # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
+
+    color = (255, 0, 0)
+    rectangle = results01['rectangle']
+    draw_rectangle(imsrc1, rectangle[0], rectangle[2], color, line_width)
 
 def test13():
     #imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
@@ -278,6 +337,7 @@ if __name__ == '__main__':
     #test10()
     test11()       #test pic logo api
     #test12()       #test pic logo gif_logo function
+    #test121()       #test pic logo gif_logo function
     #test13()       #test pic logo local
     #test14()
     #test20()
