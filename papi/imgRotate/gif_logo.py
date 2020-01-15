@@ -179,6 +179,7 @@ def hsv_mask(img,channel):
 
 #恢复坐标，从左下四分之一图像坐标恢复为整体图像
 #输入数据：{"result":[50.5,150.0],"rectangle":[[20,140],[29,162],[81,160],[96,147]],"confidence":0.5833333333333334}}
+#width:原图宽度， height：原图高度
 #输出数据，格式与输入数据一样，坐标变换
 def co_quarter2full(width,height,results):
         # 恢复矩形坐标
@@ -199,7 +200,7 @@ def co_quarter2full(width,height,results):
         logger.info('co_quarter2full coordinate:{0}'.format(results))
         return results
 
-#以center为中心，按输入logo 2倍大小生成返回的矩形坐标
+#以center为中心，按输入logo n倍(factor)大小生成返回的矩形坐标
 #输入数据：{"result":[50.5,150.0],"rectangle":[[20,140],[29,162],[81,160],[96,147]],"confidence":0.5833333333333334}}
 #weight1,height1：logo的尺寸；weight2,height2：pic的尺寸
 #factor 缩放比例

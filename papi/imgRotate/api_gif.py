@@ -98,14 +98,25 @@ def pic_logo_location(request):
     #results = pos['rectangle']      #矩形坐标
     #results = pos['result']         #中心坐标
     logger.info('logo_location position:{0}'.format(results))
-    if channel==1 and (results != None):
+
+    #如果是直播吧渠道，并且results非空
+    if channel == 1 and (results != None):
         #直播吧恢复坐标，从左下四分之一图像
         results = co_quarter2full(width_pic,height_pic,results)
         logger.info('logo_location position 00:{0}'.format(results))
-        #以center为中心，按logo 2倍大小生成返回的矩形坐标
-        factor = 0.7  # 缩放比例
-        results = gen_coordinate_from_center(width_logo,height_logo,width_pic,height_pic,results,factor)
-        logger.info('logo_location position 11:{0}'.format(results))
 
+        # 按照两条对角线分别计算返回矩形的面积,计算logo的面积(*0.9)
+        area_r0 = (results['rectangle'][0][0] - results['rectangle'][2][0]) * (results['rectangle'][0][1] - results['rectangle'][2][1])
+        area_r1 = (results['rectangle'][1][0] - results['rectangle'][3][0]) * (results['rectangle'][1][1] - results['rectangle'][3][1])
+
+        area_logo = width_logo * height_logo * 0.9
+        logger.info('logo_location area_r0:{0}, area_r1:{1}, area_logo:{2}'.format(area_r0, area_r1, area_logo))
+
+        #如果返回矩形面积小于logo面积，进行坐标伸缩
+        if (abs(area_r0) < abs(area_logo)) or (abs(area_r1) < abs(area_logo)):
+            #以center为中心，按logo 2倍大小生成返回的矩形坐标
+            factor = 0.7  # 缩放比例
+            results = gen_coordinate_from_center(width_logo,height_logo,width_pic,height_pic,results,factor)
+            logger.info('logo_location position 11:{0}'.format(results))
 
     return Response({'data': results})

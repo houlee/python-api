@@ -122,9 +122,9 @@ def test11():
     else:
         url = 'http://papi.nb.com/logoLocate/'
 
-    #picurl = './imgRotate/img/zbb-pic05.png'
+    picurl = './imgRotate/img/zbb-pic01.png'
     #picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
-    picurl = 'http://wx1.sinaimg.cn/mw690/006foVpjgy1gauh470dvmg309l04rqv7.gif'
+    #picurl = 'http://wx1.sinaimg.cn/mw690/006foVpjgy1gauh470dvmg309l04rqv7.gif'
     #picurl = 'http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif'
     logourl = './imgRotate/img/zbb-logo01.png'
     #logourl = 'https://public.zgzcw.com/d/images/201912301577701547232_872.png'
@@ -206,8 +206,8 @@ def test121():
     #imobj1 = ac.imread('./imgRotate/img/hupologo01.jpg')
     #imsrc = gif_logo.hsv_mask(imsrc1,2)
     #imobj = gif_logo.hsv_mask(imobj1,2)
-    imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/006foVpjgy1gauh470dvmg309l04rqv7.gif')
-    #imsrc1 = ac.imread('./imgRotate/img/zbb-pic08.png')
+    #imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/71a4f909gy1gaugothr80g209r05a4qs.gif')
+    imsrc1 = ac.imread('./imgRotate/img/zbb-pic05.png')
     imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
 
 #取四分之一图像
@@ -230,9 +230,11 @@ def test121():
     pos = ac.find_sift(imsrc, imobj)
     print(pos)
 
-    #恢复坐标
-    if pos == None:
+    if pos == None :
+        print('return None')
         return pos
+
+    #恢复坐标
     results00 = gif_logo.co_quarter2full(width_pic, height_pic, pos)
     print("results00:%s"%(results00))
 
@@ -250,16 +252,25 @@ def test121():
     rectangle = results00['rectangle']
     draw_rectangle(imsrc1, rectangle[0], rectangle[2], color, line_width)
 
-    # 以center为中心，按logo 2倍大小生成返回的矩形坐标
-    factor = 0.7  # 缩放比例
-    results01 = gif_logo.gen_coordinate_from_center(width_logo, height_logo, width_pic, height_pic, results00,factor)
-    print("results01:%s"%(results01))
+    # 计算返回矩形的面积,计算logo的面积
+    #area_r = GetAreaOfPolyGon(results00['rectangle'])
+    area_r0 = (results00['rectangle'][0][0] - results00['rectangle'][2][0]) * (results00['rectangle'][0][1] - results00['rectangle'][2][1])
+    area_r1 = (results00['rectangle'][1][0] - results00['rectangle'][3][0]) * (results00['rectangle'][1][1] - results00['rectangle'][3][1])
+
+    area_logo = width_logo * height_logo * 0.86
+    print('logo_location area_r0:{0}, area_r1:{1}, area_logo:{2}'.format(area_r0, area_r1,area_logo))
+    # 如果返回矩形的面积大于logo的面积，不再拉伸
+    if (abs(area_r0) < abs(area_logo)) or (abs(area_r1) < abs(area_logo)):
+        # 以center为中心，按logo 2倍大小生成返回的矩形坐标
+        factor = 0.7  # 缩放比例
+        results00 = gif_logo.gen_coordinate_from_center(width_logo, height_logo, width_pic, height_pic, results00,factor)
+        print("results00:%s"%(results00))
 
     # draw rectangle
     # 输入参数分别为图像、左上角坐标、右下角坐标、颜色数组、粗细
 
     color = (255, 0, 0)
-    rectangle = results01['rectangle']
+    rectangle = results00['rectangle']
     draw_rectangle(imsrc1, rectangle[0], rectangle[2], color, line_width)
 
 def test13():
