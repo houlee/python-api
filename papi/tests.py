@@ -207,7 +207,7 @@ def test121():
     #imsrc = gif_logo.hsv_mask(imsrc1,2)
     #imobj = gif_logo.hsv_mask(imobj1,2)
     #imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/71a4f909gy1gaugothr80g209r05a4qs.gif')
-    imsrc1 = ac.imread('./imgRotate/img/zbb-pic05.png')
+    imsrc1 = ac.imread('./imgRotate/img/zbb-pic11.png')
     imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
 
 #取四分之一图像
@@ -348,9 +348,9 @@ if __name__ == '__main__':
     #test04()
     #test05()
     #test10()
-    test11()       #test pic logo api
+    #test11()       #test pic logo api
     #test12()       #test pic logo gif_logo function
-    #test121()       #test pic logo gif_logo function
+    test121()       #test pic logo gif_logo function
     #test13()       #test pic logo local
     #test14()
     #test20()

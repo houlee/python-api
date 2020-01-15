@@ -109,7 +109,7 @@ def pic_logo_location(request):
         area_r0 = (results['rectangle'][0][0] - results['rectangle'][2][0]) * (results['rectangle'][0][1] - results['rectangle'][2][1])
         area_r1 = (results['rectangle'][1][0] - results['rectangle'][3][0]) * (results['rectangle'][1][1] - results['rectangle'][3][1])
 
-        area_logo = width_logo * height_logo * 0.9
+        area_logo = width_logo * height_logo * 0.86
         logger.info('logo_location area_r0:{0}, area_r1:{1}, area_logo:{2}'.format(area_r0, area_r1, area_logo))
 
         #如果返回矩形面积小于logo面积，进行坐标伸缩
