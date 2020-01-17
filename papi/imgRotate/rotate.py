@@ -70,6 +70,9 @@ def figureDegree(path,precision):
     # 边缘检测
     canny = cv2.Canny(eroDil, 50, 150)
     #showAndWaitKey("canny", canny)
+
+    degree = []
+
     # 霍夫变换得到线条
     """
     HoughLinesP(image, rho, theta, threshold, lines=None, minLineLength=None, maxLineGap=None) 
@@ -84,8 +87,16 @@ def figureDegree(path,precision):
     #lines = cv2.HoughLinesP(canny, 0.8, np.pi / 180, 40, minLineLength=100, maxLineGap=100)
     #lines = cv2.HoughLinesP(canny, 0.8, np.pi / 180, 40, minLineLength=100, maxLineGap=200)        #test04,test05ok，precision=3
     lines = cv2.HoughLinesP(canny, 0.8, np.pi / 180, 40, minLineLength=100, maxLineGap=200)         #对于长度选择模式，都ok，precision=1
-    if not lines.any():
-        return 0
+    #lines = None
+    try:
+        if not lines.any():
+            logger.info('no lines:{0}'.format(lines))
+            degree.append(0)
+            return degree
+    except Exception as e:
+        logger.error('figureDegree no lines:{0}, error:{1}'.format(lines,e))
+        degree.append(0)
+        return degree
     drawing = np.zeros(src.shape[:], dtype=np.uint8)
     # 画出线条
     dataDict={}
@@ -96,7 +107,6 @@ def figureDegree(path,precision):
         #print(x1,y1,x2,y2)
         dataProc(dataDict,precision,x1,y1,x2,y2)
 
-    degree=[]
     # dict结构：{degree1:[count1,len1],degree2:[count2,len2]}
     #按长度倒序排序
     lenList = sorted(dataDict.items(), key=lambda x: x[1][1], reverse=True)
