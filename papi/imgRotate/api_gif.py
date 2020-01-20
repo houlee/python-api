@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .utils import image_read
-from .gif_logo import  get_gif_frame1,hsv_mask,co_quarter2full,gen_coordinate_from_center
+from .gif_logo import  get_gif_frame1,hsv_mask,co_quarter2full,gen_coordinate_from_center,data_validation
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -101,9 +101,23 @@ def pic_logo_location(request):
 
     #如果是直播吧渠道，并且results非空
     if channel == 1 and (results != None):
+        #logger.info('{0}'.format(type(results)))
+        #校验results的中心点坐标是否可用
+        if (not data_validation(results, height_pic // 2, width_pic // 2)):
+            #sift算法失败，使用fk算法
+            results00 = ac.fk_find_sift(imsrc, imlogo)
+            if not results00:
+                results=[]
+            else:
+                results = results00
+            logger.info('logo_location position 00:{0}'.format(results))
+            if not data_validation(results, height_pic // 2, width_pic // 2):
+                #fk算法也失败，直接返回空
+                results=[]
+                return Response({'data': results})
         #直播吧恢复坐标，从左下四分之一图像
         results = co_quarter2full(width_pic,height_pic,results)
-        logger.info('logo_location position 00:{0}'.format(results))
+        logger.info('logo_location position 01:{0}'.format(results))
 
         # 按照两条对角线分别计算返回矩形的面积,计算logo的面积(*0.9)
         area_r0 = (results['rectangle'][0][0] - results['rectangle'][2][0]) * (results['rectangle'][0][1] - results['rectangle'][2][1])

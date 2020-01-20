@@ -43,6 +43,7 @@ ref: <http://docs.opencv.org/modules/imgproc/doc/geometric_transformations.html#
 
 import cv2
 import numpy as np
+from .gif_logo import gen_coordinate_from_center
 #日志设置
 import logging
 logger = logging.getLogger('log')
@@ -234,6 +235,7 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
         if len(good) < min_match_count:
             break
         logger.info("find_all_sift len(good) is :{0}".format(len(good)))
+        #print("find_all_sift len(good) is :{0}".format(len(good)))
 
         sch_pts = np.float32([kp_sch[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
         img_pts = np.float32([kp_src[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
@@ -243,6 +245,7 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
         #matches_mask = mask.ravel().tolist()
         if np.all(mask==0):
             logger.error("find_all_sift mask is None!!!")
+            return result
 
         # 计算四个角矩阵变换后的坐标，也就是在大图中的坐标
         h, w = im_search.shape[:2]
@@ -287,6 +290,77 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
         des_src = filter_index(tindexes, des_src)
 
     return result
+
+#fk 改进sift，求所有good点的中心坐标，替换原算法的中心坐标
+def fk_find_sift(im_source, im_search, min_match_count=4, maxcnt=0):
+    '''
+    使用sift算法进行多个相同元素的查找
+    Args:
+        im_source(string): 图像、素材
+        im_search(string): 需要查找的图片
+        threshold: 阈值，当相识度小于该阈值的时候，就忽略掉
+        maxcnt: 限制匹配的数量
+
+    Returns:
+        A tuple of found [(point, rectangle), ...]
+        A tuple of found [{"point": point, "rectangle": rectangle, "confidence": 0.76}, ...]
+        rectangle is a 4 points list
+    '''
+    sift = _sift_instance()
+    flann = cv2.FlannBasedMatcher({'algorithm': FLANN_INDEX_KDTREE, 'trees': 5}, dict(checks=50))
+
+    kp_sch, des_sch = sift.detectAndCompute(im_search, None)
+    #print(len(kp_sch))
+    if len(kp_sch) < min_match_count:
+        return None
+
+    kp_src, des_src = sift.detectAndCompute(im_source, None)
+    #print(len(kp_src))
+    if len(kp_src) < min_match_count:
+        return None
+
+    h, w = im_search.shape[1:]
+
+
+    # 匹配两个图片中的特征点，k=2表示每个特征点取2个最匹配的点
+    matches = flann.knnMatch(des_sch, des_src, k=2)
+    good = []
+    for m, n in matches:
+        # 剔除掉跟第二匹配太接近的特征点
+        if m.distance < 0.9 * n.distance:
+            good.append(m)
+            pt1 = kp_sch[m.queryIdx].pt  # trainIdx    是匹配之后所对应关键点的序号，第一个载入图片的匹配关键点序号
+            pt2 = kp_src[m.trainIdx].pt  # queryIdx    是匹配之后所对应关键点的序号，第二个载入图片的匹配关键点序号
+            #print(pt1, pt2)
+
+    if len(good) < min_match_count:
+        return None
+
+    logger.info("fk_find_sift len(good) is :{0}".format(len(good)))
+
+    #计算中心点坐标
+    pc = [0, 0]
+    for g in good:
+        pt1 = kp_sch[g.queryIdx].pt  # queryIdx    是匹配之后所对应关键点的序号，第一个载入图片的匹配关键点序号
+        pt2 = kp_src[g.trainIdx].pt  # trainIdx    是匹配之后所对应关键点的序号，第二个载入图片的匹配关键点序号
+        pc[0] += pt2[0]
+        pc[1] += pt2[1]
+    pc[0] = pc[0] // len(good)
+    pc[1] = pc[1] // len(good)
+    logger.info("fk_find_sift center point::{0}".format(pc))
+
+    #生成矩形坐标
+    height_pic, width_pic = im_source.shape[:2]
+    #print("height_pic %d;width_pic %d" % (height_pic, width_pic))
+    height_logo, width_logo = im_search.shape[:2]
+    #print("height_logo %d;width_logo %d" % (height_logo, width_logo))
+    results = {}
+    results['result'] = tuple(pc)
+    factor = 0.55  # 缩放比例
+    results = gen_coordinate_from_center(width_logo, height_logo, width_pic, height_pic, results, factor)
+    #print('fk_find_sift position 22:{0}'.format(results))
+
+    return results
 
 
 def find_all(im_source, im_search, maxcnt=0):

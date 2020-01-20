@@ -182,23 +182,25 @@ def hsv_mask(img,channel):
 #width:原图宽度， height：原图高度
 #输出数据，格式与输入数据一样，坐标变换
 def co_quarter2full(width,height,results):
-        # 恢复矩形坐标
-        rectangle = []
-        for item in results['rectangle']:
-            a = list(item)
-            a[1] = a[1] + height // 2
-            a = tuple(a)
-            rectangle.append(a)
-        # 恢复中心坐标
-        center = list(results['result'])
-        center[0] = int(center[0])
-        center[1] = int(center[1] + height // 2)
-        center = tuple(center)
-
-        results['result'] = center
-        results['rectangle'] = rectangle
-        logger.info('co_quarter2full coordinate:{0}'.format(results))
+    if not results:
         return results
+    # 恢复矩形坐标
+    rectangle = []
+    for item in results['rectangle']:
+        a = list(item)
+        a[1] = a[1] + height // 2
+        a = tuple(a)
+        rectangle.append(a)
+    # 恢复中心坐标
+    center = list(results['result'])
+    center[0] = int(center[0])
+    center[1] = int(center[1] + height // 2)
+    center = tuple(center)
+
+    results['result'] = center
+    results['rectangle'] = rectangle
+    logger.info('co_quarter2full coordinate:{0}'.format(results))
+    return results
 
 #以center为中心，按输入logo n倍(factor)大小生成返回的矩形坐标
 #输入数据：{"result":[50.5,150.0],"rectangle":[[20,140],[29,162],[81,160],[96,147]],"confidence":0.5833333333333334}}
@@ -219,7 +221,7 @@ def gen_coordinate_from_center(width1, height1, width2, height2, results, factor
     x2 = center[0] + width1 * factor
     x2 = x2 if x2 < width2 else width2
     y2 = center[1] + height1*factor
-    y2 = y2 if x2 < height2 else height2
+    y2 = y2 if y2 < height2 else height2
 
     # 给rectangle赋值
     rectangle = [[0 for i in range(2)] for i in range(4)]
@@ -233,5 +235,15 @@ def gen_coordinate_from_center(width1, height1, width2, height2, results, factor
     results['rectangle'] = rectangle
     return results
 
+#校验中心点坐标是否可用
+def data_validation(results, height_pic, width_pic):
+    if not results:
+        return False
+    center = results['result']
+    if abs(center[0]) > width_pic or abs(center[1]) > height_pic:
+        logger.info('data_validation error: center:{0}, height_pic:{1}, width_pic:{2}'.format(center,height_pic,width_pic))
+        return False
+    else:
+        return True
 
 

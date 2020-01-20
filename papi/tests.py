@@ -122,9 +122,9 @@ def test11():
     else:
         url = 'http://papi.nb.com/logoLocate/'
 
-    picurl = './imgRotate/img/zbb-pic01.png'
+    #picurl = './imgRotate/img/zbb-pic01.png'
     #picurl = 'https://public.zgzcw.com/d/images/201912301577706608417_872.png'
-    #picurl = 'http://wx1.sinaimg.cn/mw690/006foVpjgy1gauh470dvmg309l04rqv7.gif'
+    picurl = 'http://wx1.sinaimg.cn/mw690/0081bNJhgy1gb2ibg7ue0g30cu05su0x.gif'
     #picurl = 'http://wx1.sinaimg.cn/mw690/006ekxoggy1gad3dx86y2g30aa058kjl.gif'
     logourl = './imgRotate/img/zbb-logo01.png'
     #logourl = 'https://public.zgzcw.com/d/images/201912301577701547232_872.png'
@@ -206,18 +206,21 @@ def test121():
     #imobj1 = ac.imread('./imgRotate/img/hupologo01.jpg')
     #imsrc = gif_logo.hsv_mask(imsrc1,2)
     #imobj = gif_logo.hsv_mask(imobj1,2)
-    #imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/71a4f909gy1gaugothr80g209r05a4qs.gif')
-    imsrc1 = ac.imread('./imgRotate/img/zbb-pic11.png')
+    imsrc1 = gif_logo.get_gif_frame1('http://wx1.sinaimg.cn/mw690/0081bNJhgy1gb2ibg7ue0g30cu05su0x.gif')
+    #imsrc1 = ac.imread('./imgRotate/img/zbb-pic02.png')
     imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
 
 #取四分之一图像
     #直播吧取左下四分之一图像
     height_pic, width_pic = imsrc1.shape[:2]
-    print("heightpic %d;widthpic %d"%(height_pic,width_pic))
+    print("height_pic %d;width_pic %d"%(height_pic,width_pic))
     imsrc2 = imsrc1[height_pic // 2:height_pic, 0:width_pic // 2]
     height_logo, width_logo = imobj1.shape[:2]
     print("height_logo %d;width_logo %d" % (height_logo, width_logo))
     cv2.imshow('quater', imsrc2)
+    cv2.waitKey()
+
+    cv2.imshow('logo', imobj1)
     cv2.waitKey()
 
     imsrc = gif_logo.hsv_mask(imsrc2,1)
@@ -227,7 +230,8 @@ def test121():
     cv2.waitKey()
 
     # find the match position
-    pos = ac.find_sift(imsrc, imobj)
+    #pos = ac.find_sift(imsrc, imobj)
+    pos = ac.fk_find_sift(imsrc, imobj)
     print(pos)
 
     if pos == None :
@@ -274,15 +278,28 @@ def test121():
     draw_rectangle(imsrc1, rectangle[0], rectangle[2], color, line_width)
 
 def test13():
-    #imsrc = ac.imread('./imgRotate/img/hupu001.jpg')
-    #imobj = ac.imread('./imgRotate/img/hupologo01.jpg')
-    imsrc1 = gif_logo.get_gif_frame1('http://wx4.sinaimg.cn/mw690/71a4f909gy1gank3de9c0g20b105mhdv.gif')
+    # imsrc1 = ac.imread('./imgRotate/img/hupu001.jpg')
+    # imobj1 = ac.imread('./imgRotate/img/hupologo01.jpg')
+    # imsrc = gif_logo.hsv_mask(imsrc1,2)
+    # imobj = gif_logo.hsv_mask(imobj1,2)
+    imsrc1 = gif_logo.get_gif_frame1('http://wx2.sinaimg.cn/mw690/005yrhzjgy1gb2kyrf49zg30a305i7wm.gif')
+    #imsrc1 = ac.imread('./imgRotate/img/zbb-pic11.png')
+    imobj1 = ac.imread('./imgRotate/img/zbb-logo01.png')
 
-    #imsrc1 = cv2.imread('./imgRotate/img/zbb-pic04.png')
-    imobj1 = cv2.imread('./imgRotate/img/zbb-logo03.png')
+    # 取四分之一图像
+    # 直播吧取左下四分之一图像
+    height_pic, width_pic = imsrc1.shape[:2]
+    print("heightpic %d;widthpic %d" % (height_pic, width_pic))
+    imsrc2 = imsrc1[height_pic // 2:height_pic, 0:width_pic // 2]
+    height_logo, width_logo = imobj1.shape[:2]
+    print("height_logo %d;width_logo %d" % (height_logo, width_logo))
+    cv2.imshow('quater', imsrc2)
+    cv2.waitKey()
 
-    imsrc = gif_logo.hsv_mask(imsrc1,1)
-    imobj = gif_logo.hsv_mask(imobj1,1)
+    imsrc = gif_logo.hsv_mask(imsrc2, 1)
+    imobj = gif_logo.hsv_mask(imobj1, 1)
+
+    good = []
 
     sift = cv2.xfeatures2d.SIFT_create(edgeThreshold=100)  # 创建sift检测器
     kp1, des1 = sift.detectAndCompute(imobj, None)
@@ -300,7 +317,30 @@ def test13():
         #print("n:%d" % (n.distance))
         if m.distance < 0.9 * n.distance:  # 舍弃小于0.5的匹配结果
             print("mmok")
+            good.append(m)
             matchesMask[i] = [1, 0]
+
+    pc = [0,0]
+    for g in good:
+        pt1 = kp1[g.queryIdx].pt  # trainIdx    是匹配之后所对应关键点的序号，第一个载入图片的匹配关键点序号
+        pt2 = kp2[g.trainIdx].pt  # queryIdx  是匹配之后所对应关键点的序号，第二个载入图片的匹配关键点序号
+        print(pt1, pt2)
+        cv2.circle(imobj1, (int(pt1[0]), int(pt1[1])), 5, (255, 0, 255), -1)
+        cv2.circle(imsrc2, (int(pt2[0]), int(pt2[1])), 5, (255, 0, 255), -1)
+        pc[0]+=pt2[0]
+        pc[1]+=pt2[1]
+
+    cv2.imshow('imobj1', imobj1)
+    cv2.waitKey()
+    cv2.imshow('imsrc2', imsrc2)
+    cv2.waitKey()
+
+    pc[0] = pc[0] // len(good)
+    pc[1] = pc[1] // len(good)
+    print(pc)
+    cv2.circle(imsrc2, (int(pc[0]), int(pc[1])), 5, (255, 0, 0), -1)
+    cv2.imshow('imsrc2', imsrc2)
+    cv2.waitKey()
 
     drawParams = dict(matchColor=(0, 0, 255), singlePointColor=(255, 0, 0), matchesMask=matchesMask,
                       flags=0)  # 给特征点和匹配的线定义颜色
