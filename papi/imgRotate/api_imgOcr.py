@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import rotate
-from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content
+from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content,package_data
 from . import barcode
 from .global_data import g_ocr_type,g_count_bdocr
 import cv2
@@ -89,18 +89,67 @@ def img_ocr(request):
     # pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
     # 必须要能识别出线条，否则会报错
     return Response({'data': results})
+
+@csrf_exempt
+@api_view(http_method_names=['post'])                #只允许 post
+@permission_classes((permissions.AllowAny,))
+#彩票图片OCR接口 识别文字，返回识别后的文字。不旋转。type取值 1：百度OCR; 2: 疯狂OCR
+def cpimg_ocr(request):
+
+    global g_ocr_type
+    parameter = request.data
+    logger.info('img_ocr para:{0}'.format(parameter))
+
+    #获取原始图片地址和OCR类型
+    path = parameter['url']
+    type = parameter['type']
+    precision = 3
+
+    if path.find('http') != -1:  # 网络图片
+        gray = utils.url_to_image(path, cv2.IMREAD_COLOR)
+    else:  # 本地图片
+        # 读取图片，灰度化
+        gray = cv2.imread(path, cv2.IMREAD_COLOR)
+    #获取保存图片地址并保存旋转后的图片
+    savepath = get_savepath(path)
+    logger.info('temp img savepath:{0}'.format(savepath))
+
+    cv2.imwrite(savepath, gray)
+
+    # django cache读取变量
+    #g_ocr_type = cache_get(g_ocr_type)
+    g_ocr_type = 2
+    #if type == 2:
+    if g_ocr_type == 2:       #使用全局变量控制，和传入参数无关，默认使用BDOCR，在BDOCR次数用尽后，使用FKOCR
+        logger.info('FKocr')
+        results=FKocr(savepath)
+    else:
+        logger.info('BDocr')
+        results=BDocr(savepath)
+    logger.info('ocr results:{0}'.format(results))
+
+    #百度识别原图像
+    #results1 = BDocr(path)
+    #logger.info('ori ocr results:{0}'.format(results1))
+
+    #删除旋转后的临时文件
+    os.remove(savepath)
+    #OCR
+    # pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
+    # 必须要能识别出线条，否则会报错
+    return Response({'data': results})
 #
 def FKocr(path):
     # image = Image.open("./img/test04r01.jpg")
     image = Image.open(path)
     # 对图片进行阈值过滤（低于143的置为黑色，否则为白色）
     # 相当于对电脑显卡调节对比度(电脑显卡对比度默认为50,我比较习惯于调成53)
-    image = image.point(lambda x: 0 if x < 143 else 255)
+    #image = image.point(lambda x: 0 if x < 143 else 255)
     # 重新保存图片
-    image.save(path)
+    #image.save(path)
     code = pytesseract.image_to_string(image, lang='chi_sim')
     logger.info('FKocr results:{0}'.format(code))
-    return utils.package_data(code)
+    return package_data(code)
 
 
 #调用百度图片OCR 识别图片文字，返回识别后的文字

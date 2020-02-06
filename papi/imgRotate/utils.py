@@ -70,8 +70,13 @@ def get_savepath(path):
     else:  # 本地图片
         return path1
 
-#字符串转换为字典
+#字符串转换为字典--不去空格
 def str_to_dict(str):
+    d={}
+    d["words"]=str
+    return d
+#字符串转换为字典 去空格
+def str_to_dict1(str):
     d={}
     str1 = str.replace(' ','')  #去空格
     d["words"]=str1
