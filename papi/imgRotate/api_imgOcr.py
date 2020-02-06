@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import rotate
-from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content,package_data
+from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_content,package_data,url_to_image
 from . import barcode
 from .global_data import g_ocr_type,g_count_bdocr
 import cv2
@@ -106,7 +106,7 @@ def cpimg_ocr(request):
     precision = 3
 
     if path.find('http') != -1:  # 网络图片
-        gray = utils.url_to_image(path, cv2.IMREAD_COLOR)
+        gray = url_to_image(path, cv2.IMREAD_COLOR)
     else:  # 本地图片
         # 读取图片，灰度化
         gray = cv2.imread(path, cv2.IMREAD_COLOR)
