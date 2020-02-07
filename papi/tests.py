@@ -14,6 +14,7 @@ sys.path.append("..")
 from imgRotate.global_data import g_debug,g_ocr_type,g_count_bdocr
 from imgRotate.utils import cache_get,cache_set,namestr,get_savepath
 import os
+import time
 #from matplotlib import pyplot as plt
 #日志设置
 import logging
@@ -59,8 +60,8 @@ def test031():
         url = 'http://papi.nb.com/cpimgOcr/'
 
     #url_list=['http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818216084494.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818918131785.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759818019831903.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015759144144043760.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015758418141947957.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756942297074845.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756508813261853.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756382795891839.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015756382141356461.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015718049603469182.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015742476088588479.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015740783413702498.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015739062897325164.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015750235922624129.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015749386814174360.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015747684238389457.jpg','http://file.fengkuangtiyu.cn/old/images/900/90015747683640417640.jpg']
-    #url_list=['http://file.fengkuangtiyu.cn/old/images/900/90015759818226579334.jpg','https://public.zgzcw.com/d/images/201910291572328653220_872.png']
-    url_list = ['./imgRotate/img/cp-dlt04.jpg']
+    url_list=['http://www.fengkuangtiyu.cn/test/5.jpg']
+    #url_list = ['./imgRotate/img/cp-dlt04.jpg']
     for u in url_list:
         data = {'url': u, 'type': 1}
         # data = {'url': "./imgRotate/img/test19.jpg", 'type': 1}
@@ -396,15 +397,18 @@ def test20():
 print(g_debug)
 
 if __name__ == '__main__':
+    start = time.time()
     #test01()
     #test02()
     #for i in range(30):
-    test03()
-    #test031()
+    #test03()
+    test031()
+    end = time.time()
+    print('Running time: %s Seconds' % (end - start))
     #test04()
     #test05()
     #test10()
-    test11()       #test pic logo api
+    #test11()       #test pic logo api
     #test12()       #test pic logo gif_logo function
     #test121()       #test pic logo gif_logo function
     #test13()       #test pic logo local

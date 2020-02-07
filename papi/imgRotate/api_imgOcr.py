@@ -4,7 +4,7 @@ from .utils import cache_set,cache_get,cache_increase,get_savepath,get_file_cont
 from . import barcode
 from .global_data import g_ocr_type,g_count_bdocr
 import cv2
-import pytesseract
+import subprocess
 from PIL import Image
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -12,6 +12,7 @@ from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from aip import AipOcr
 import os
+import time
 #日志设置
 import logging
 logger = logging.getLogger('log')
@@ -95,7 +96,7 @@ def img_ocr(request):
 @permission_classes((permissions.AllowAny,))
 #彩票图片OCR接口 识别文字，返回识别后的文字。不旋转。type取值 1：百度OCR; 2: 疯狂OCR
 def cpimg_ocr(request):
-
+    #start = time.time()
     global g_ocr_type
     parameter = request.data
     logger.info('img_ocr para:{0}'.format(parameter))
@@ -103,13 +104,13 @@ def cpimg_ocr(request):
     #获取原始图片地址和OCR类型
     path = parameter['url']
     type = parameter['type']
-    precision = 3
-
     if path.find('http') != -1:  # 网络图片
         gray = url_to_image(path, cv2.IMREAD_COLOR)
     else:  # 本地图片
         # 读取图片，灰度化
         gray = cv2.imread(path, cv2.IMREAD_COLOR)
+
+
     #获取保存图片地址并保存旋转后的图片
     savepath = get_savepath(path)
     logger.info('temp img savepath:{0}'.format(savepath))
@@ -137,20 +138,70 @@ def cpimg_ocr(request):
     #OCR
     # pip install pytesseract，pip install tesseract，pip install tesseract-ocr，
     # 必须要能识别出线条，否则会报错
+    #end = time.time()
+    #print('Running time: %s Seconds' % (end - start))
     return Response({'data': results})
-#
-def FKocr(path):
+
+def FKocr_old(path):
     # image = Image.open("./img/test04r01.jpg")
     image = Image.open(path)
+    start = time.time()
     # 对图片进行阈值过滤（低于143的置为黑色，否则为白色）
     # 相当于对电脑显卡调节对比度(电脑显卡对比度默认为50,我比较习惯于调成53)
     #image = image.point(lambda x: 0 if x < 143 else 255)
     # 重新保存图片
     #image.save(path)
     code = pytesseract.image_to_string(image, lang='chi_sim')
+    end = time.time()
+    logger.info('FKocr Running time: {0} Seconds'.format(end - start))
     logger.info('FKocr results:{0}'.format(code))
     return package_data(code)
 
+def subprocess_args(include_stdout=True):
+    # See https://github.com/pyinstaller/pyinstaller/wiki/Recipe-subprocess
+    # for reference and comments.
+
+    kwargs = {
+        'stdin': subprocess.PIPE,
+        'stderr': subprocess.PIPE,
+        'startupinfo': None,
+        'env': os.environ,
+    }
+
+    if hasattr(subprocess, 'STARTUPINFO'):
+        kwargs['startupinfo'] = subprocess.STARTUPINFO()
+        kwargs['startupinfo'].dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        kwargs['startupinfo'].wShowWindow = subprocess.SW_HIDE
+
+    if include_stdout:
+        kwargs['stdout'] = subprocess.PIPE
+
+    return kwargs
+
+
+def FKocr(path):
+    start = time.time()
+    #获取tesseract文件结果保存文件地址
+    out_path=get_savepath(path)
+    # 设置tesseract命令执行参数并执行
+    cmd_args = []
+    lang =  'chi_sim'
+    cmd_args += ('tesseract', path, out_path, '-l', lang)
+    try:
+        #proc = subprocess.Popen(cmd_args, **subprocess_args())
+        proc = subprocess.run(cmd_args, **subprocess_args())
+    except Exception as e:
+        logger.error('tesseract error:{0}'.format(e))
+    # 解析tesseract执行结果
+    filename = out_path+'.txt'
+    with open(filename, 'rb') as output_file:
+        code = output_file.read().decode('utf-8').strip()
+    #删除保存执行结果的临时文件
+    os.remove(filename)
+    end = time.time()
+    logger.info('FKocr Running time: {0} Seconds'.format(end - start))
+    logger.info('FKocr results:{0}'.format(code))
+    return package_data(code)
 
 #调用百度图片OCR 识别图片文字，返回识别后的文字
 def BDocr(url):
